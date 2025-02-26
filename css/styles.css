@@ -1,0 +1,39 @@
+#background-coloring {
+  background-color: rgba(0, 167, 217, 1);
+}
+
+nav {
+  background-color: white;
+}
+
+#navbar-nav {
+  justify-content: end;
+}
+
+#logo,
+#home-tab,
+#breeds-tab,
+#favorites-tab {
+  color: #00a7d9;
+  font-family: Righteous, serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#logo {
+  font-size: 24px;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 167, 217, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.navbar-toggler {
+  border-width: 2px !important;
+  border-color: rgba(0, 167, 217, 1) !important;
+}
+
+#tab {
+  font-size: 18px;
+  padding: 8px 16px;
+}
