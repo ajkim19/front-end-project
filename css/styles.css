@@ -18,7 +18,7 @@ nav {
 #home-tab,
 #breeds-tab,
 #favorites-tab,
-.page-title {
+.page-title-container > h1 {
   font-family: Righteous, serif;
   font-weight: 400;
   font-style: normal;
@@ -108,12 +108,16 @@ nav {
   margin: 20px auto;
 }
 
-.page-title {
+.page-title-container {
   color: white;
   margin-bottom: 10px;
 }
 
-.page-body {
+.page-title-container > h1 {
+  font-size: 28px;
+}
+
+.page-body-container {
   color: white;
   font-family: Roboto, sans-serif;
   font-optical-sizing: auto;
@@ -124,8 +128,17 @@ nav {
   width: 90%;
 }
 
+.breeds-form {
+  margin: 0 auto;
+}
+
+.breeds-list {
+  width: 300px;
+  margin: 0 auto;
+}
+
 /* Desktop View */
-@media screen and (width >= 576px) {
+@media screen and (width >= 720px) {
   #home-tab,
   #breeds-tab,
   #favorites-tab {
@@ -133,18 +146,20 @@ nav {
     padding: 6px 18px;
   }
 
+  .page-view-container {
+    width: 720px;
+    margin: 0 auto;
+  }
+
   .page-image-container {
     margin: 10px auto;
   }
 
-  .page-title {
+  .page-title-container {
     margin-bottom: 20px;
   }
-}
 
-@media screen and (width >= 720px) {
-  .page-view-container {
-    width: 720px;
-    margin: 0 auto;
+  .page-title-container > h1 {
+    font-size: 36px;
   }
 }
