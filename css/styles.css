@@ -121,6 +121,14 @@ nav {
   #home-tab,
   #breeds-tab,
   #favorites-tab {
-    margin: 0 4px;
+    font-size: 20px;
+    padding: 6px 16px;
+  }
+}
+
+@media screen and (width >= 720px) {
+  .home-view-container {
+    width: 720px;
+    margin: 0 auto;
   }
 }
