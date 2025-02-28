@@ -6,6 +6,10 @@ nav {
   background-color: white;
 }
 
+#navbar {
+  padding: 8px 4px;
+}
+
 #navbar-nav {
   justify-content: end;
 }
@@ -18,10 +22,12 @@ nav {
   font-family: Righteous, serif;
   font-weight: 400;
   font-style: normal;
+  box-sizing: border-box;
 }
 
 #logo {
   font-size: 24px;
+  padding: 0 8px;
 }
 
 .navbar-toggler-icon {
@@ -29,11 +35,57 @@ nav {
 }
 
 .navbar-toggler {
-  border-width: 2px !important;
-  border-color: rgba(0, 167, 217, 1) !important;
+  border: 2px solid rgba(0, 167, 217, 1) !important;
+  border-radius: 8px !important;
 }
 
-#tab {
-  font-size: 18px;
-  padding: 8px 16px;
+.navbar-toggler:focus,
+.navbar-toggler:hover,
+.navbar-toggler:active {
+  background-color: rgba(0, 167, 217, 1) !important;
+  border: 2px solid white !important;
+  outline: none;
+}
+
+.navbar-toggler:focus > .navbar-toggler-icon,
+.navbar-toggler:hover > .navbar-toggler-icon,
+.navbar-toggler:active > .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='rgba(0, 167, 217, 1)' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+#home-tab,
+#breeds-tab,
+#favorites-tab {
+  font-size: 16px;
+  text-align: center;
+  padding: 8px 20px;
+  border: 2px solid #00a7d9;
+  border-radius: 8px;
+  margin: 4px;
+}
+
+#home-tab:active,
+#breeds-tab:active,
+#favorites-tab:active,
+#home-tab:focus,
+#breeds-tab:focus,
+#favorites-tab:focus,
+#home-tab:hover,
+#breeds-tab:hover,
+#favorites-tab:hover {
+  color: white !important;
+  background-color: #00a7d9 !important;
+  border: 2px solid white !important;
+}
+
+/* .home-page-image {
+} */
+
+/* Desktop View */
+@media screen and (width >= 576px) {
+  #home-tab,
+  #breeds-tab,
+  #favorites-tab {
+    margin: 0 4px;
+  }
 }

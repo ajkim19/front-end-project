@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/layout.css" />
     <link rel="stylesheet" href="css/styles.css" />
+    <script
+      src="https://kit.fontawesome.com/2ab4b76545.js"
+      crossorigin="anonymous"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -33,14 +36,16 @@
   </head>
   <body id="background-coloring">
     <header>
-      <nav class="flex navbar navbar-expand-sm navbar-light">
-        <div class="navbar-brand" id="logo">Picking Pals</div>
+      <nav class="navbar navbar-expand-sm navbar-light" id="navbar">
+        <div class="navbar-brand" id="logo">
+          Picking Pals <i class="fa-solid fa-paw"></i>
+        </div>
         <button
           class="navbar-toggler"
           type="button"
           data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
+          data-target="#navbar-nav"
+          aria-controls="navbar-nav"
           aria-expanded="false"
           aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -61,7 +66,14 @@
       </nav>
     </header>
     <main>
-      <div data-view="home-view"></div>
+      <div data-view="home-view">
+        <div class="flex container">
+          <img
+            class="home-page-image"
+            src="images/home-page-image.jpg"
+            alt="home-page-image.jpg" />
+        </div>
+      </div>
     </main>
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
