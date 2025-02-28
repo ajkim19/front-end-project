@@ -85,7 +85,11 @@ nav {
   border: 2px solid white !important;
 }
 
-.home-view-container {
+.hide-view {
+  display: none !important;
+}
+
+.page-view-container {
   flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
@@ -93,7 +97,11 @@ nav {
   padding: 4px 8px;
 }
 
-.home-page-image {
+.page-image-container {
+  margin: 0 auto;
+}
+
+.page-image {
   width: 90%;
   box-sizing: border-box;
   border-radius: 25px;
@@ -122,12 +130,20 @@ nav {
   #breeds-tab,
   #favorites-tab {
     font-size: 20px;
-    padding: 6px 16px;
+    padding: 6px 18px;
+  }
+
+  .page-image-container {
+    margin: 10px auto;
+  }
+
+  .page-title {
+    margin-bottom: 20px;
   }
 }
 
 @media screen and (width >= 720px) {
-  .home-view-container {
+  .page-view-container {
     width: 720px;
     margin: 0 auto;
   }
