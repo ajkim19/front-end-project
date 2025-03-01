@@ -1,26 +1,26 @@
 // Creates the data type that will be used for data
-interface Data {
+interface PPData {
   breedList?: object[];
   favoritesList?: object[];
 }
 
 // Initializes the data that will be stored in local storage
-let data: Data = {};
+let ppData: PPData = {};
 
 // // Saves data to local storage for persistent data
-// function writeData(data: Data): void {
-//   const dataJSON = JSON.stringify(data);
-//   localStorage.setItem('data-storage', dataJSON);
+// function writeData(ppData: PPData): void {
+//   const ppDataJSON = JSON.stringify(ppData);
+//   localStorage.setItem('picking-pals-storage', ppDataJSON);
 // }
 
 // Retrieves the data from local storage for the application
-function readData(): Data {
-  const dataJSON = localStorage.getItem('data-storage');
-  if (!dataJSON) {
-    return data;
+function readData(): PPData {
+  const ppDataJSON = localStorage.getItem('picking-pals-storage');
+  if (!ppDataJSON) {
+    return ppData;
   }
-  const dataParsed = JSON.parse(dataJSON) as Data;
-  return dataParsed;
+  const ppDataParsed = JSON.parse(ppDataJSON) as PPData;
+  return ppDataParsed;
 }
 
-data = readData();
+ppData = readData();
