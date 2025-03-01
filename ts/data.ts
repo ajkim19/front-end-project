@@ -1,7 +1,18 @@
 // Creates the data type that will be used for data
+interface BreedID {
+  name: string;
+  id: number;
+}
+
+interface BreedIDImage {
+  name: string;
+  id: number;
+  reference_image_id: string;
+}
+
 interface PPData {
-  breedList?: object[];
-  favoritesList?: object[];
+  breedList?: BreedID[];
+  favoritesList?: BreedIDImage[];
 }
 
 // Initializes the data that will be stored in local storage
