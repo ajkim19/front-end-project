@@ -56,6 +56,8 @@ async function fetchBreedsList(): Promise<void> {
         id: breed.id,
       } as BreedID);
     }
+
+    // Stores `breedList` for future use
     ppData.breedsList = breedsList;
     writeData(ppData);
   } catch (error) {

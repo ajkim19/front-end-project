@@ -35,7 +35,9 @@ async function fetchBreedsList() {
         id: breed.id,
       });
     }
-    console.log('breedsList', breedsList);
+    // Stores `breedList` for future use
+    ppData.breedsList = breedsList;
+    writeData(ppData);
   } catch (error) {
     // Log any errors that arise during the fetch operation
     console.error('Error:', error);
