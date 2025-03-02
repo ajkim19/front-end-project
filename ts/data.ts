@@ -11,18 +11,18 @@ interface BreedIDImage {
 }
 
 interface PPData {
-  breedList?: BreedID[];
+  breedsList?: BreedID[];
   favoritesList?: BreedIDImage[];
 }
-
-// Initializes the data that will be stored in local storage
 let ppData: PPData = {};
+ppData = readData();
+let breedsList: any[] = [];
 
-// // Saves data to local storage for persistent data
-// function writeData(ppData: PPData): void {
-//   const ppDataJSON = JSON.stringify(ppData);
-//   localStorage.setItem('picking-pals-storage', ppDataJSON);
-// }
+// Saves data to local storage for persistent data
+function writeData(ppData: PPData): void {
+  const ppDataJSON = JSON.stringify(ppData);
+  localStorage.setItem('picking-pals-storage', ppDataJSON);
+}
 
 // Retrieves the data from local storage for the application
 function readData(): PPData {
@@ -34,4 +34,34 @@ function readData(): PPData {
   return ppDataParsed;
 }
 
-ppData = readData();
+async function fetchBreedsList(): Promise<void> {
+  // Clears any possible values assigned `breedList`
+  breedsList = [];
+
+  try {
+    // Initiate a fetch request and await its response
+    const response = await fetch('https://api.thedogapi.com/v1/breeds/');
+
+    // Ensure the response status indicates success
+    if (!response.ok) {
+      // If the status code is not in the successful range, throw an error
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    // Await the parsing of the response body as JSON
+    const breeds = await response.json();
+    for (const breed of breeds) {
+      breedsList.push({
+        name: breed.name,
+        id: breed.id,
+      } as BreedID);
+    }
+    ppData.breedsList = breedsList;
+    writeData(ppData);
+  } catch (error) {
+    // Log any errors that arise during the fetch operation
+    console.error('Error:', error);
+  }
+}
+
+fetchBreedsList();
