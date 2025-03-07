@@ -28,6 +28,8 @@
 //   '.breeds-list',
 // ) as HTMLSelectElement;
 // if (!$selectBreedsList) throw new Error('$selectBreedsList does not exist');
+// const $imgPageImage = document.querySelector('.page-image') as HTMLImageElement;
+// if (!$imgPageImage) throw new Error('$imgPageImage does not exist');
 
 // const $divBreedInfo = document.querySelector('.breed-info') as HTMLDivElement;
 
@@ -293,8 +295,10 @@
 //   const eventTarget = event.target as HTMLOptionElement;
 
 //   if (!eventTarget.value) {
+//     $imgPageImage.src = 'images/breeds-page-image.jpg';
 //   } else {
 //     fetchBreedInfo(Number(eventTarget.value));
 //     populateBreedInfo(breedInfo);
+//     $imgPageImage.src = `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`;
 //   }
 // });
