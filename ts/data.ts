@@ -17,6 +17,7 @@ interface PPData {
 let ppData: PPData = {};
 ppData = readData();
 let breedsList: any[] = [];
+let traitsList: any[] = [];
 
 // Saves data to local storage for persistent data
 function writeData(ppData: PPData): void {
@@ -37,6 +38,7 @@ function readData(): PPData {
 async function fetchBreedsList(): Promise<void> {
   // Clears any possible values assigned `breedList`
   breedsList = [];
+  traitsList = [];
 
   try {
     // Initiate a fetch request and await its response
@@ -55,8 +57,19 @@ async function fetchBreedsList(): Promise<void> {
         name: breed.name,
         id: breed.id,
       } as BreedID);
+      for (const trait in breed) {
+        let listedTrait = false;
+        for (let i = 0; i < traitsList.length; i++) {
+          if (trait === traitsList[i]) {
+            listedTrait = true;
+          }
+        }
+        if (listedTrait === false) {
+          traitsList.push(trait);
+        }
+      }
     }
-
+    console.log('traitsList:', traitsList);
     // Stores `breedList` for future use
     ppData.breedsList = breedsList;
     writeData(ppData);
