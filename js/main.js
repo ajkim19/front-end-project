@@ -1,7 +1,10 @@
 'use strict';
 const $selectBreedsList = document.querySelector('.breeds-list');
 if (!$selectBreedsList) throw new Error('$selectBreedsList does not exist');
+const $imgPageImage = document.querySelector('.page-image');
+if (!$imgPageImage) throw new Error('$imgPageImage does not exist');
 const $divBreedInfo = document.querySelector('.breed-info');
+let breedInfo = {};
 function populateBreedsList(breedsList) {
   for (const breed of breedsList) {
     // Creates 'option' element for each breed
@@ -14,24 +17,24 @@ function populateBreedsList(breedsList) {
     $selectBreedsList.append($optionBreed);
   }
 }
-// async function fetchBreedInfo(breedID: number): Promise<void> {
-//   try {
-//     // Initiate a fetch request and await its response
-//     const response = await fetch(
-//       `https://api.thedogapi.com/v1/breeds/${breedID}`,
-//     );
-//     // Ensure the response status indicates success
-//     if (!response.ok) {
-//       // If the status code is not in the successful range, throw an error
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-//     // Await the parsing of the response body as JSON
-//     breedInfo = (await response.json()) as BreedInfo;
-//   } catch (error) {
-//     // Log any errors that arise during the fetch operation
-//     console.error('Error:', error);
-//   }
-// }
+async function fetchBreedInfo(breedID) {
+  try {
+    // Initiate a fetch request and await its response
+    const response = await fetch(
+      `https://api.thedogapi.com/v1/breeds/${breedID}`,
+    );
+    // Ensure the response status indicates success
+    if (!response.ok) {
+      // If the status code is not in the successful range, throw an error
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    // Await the parsing of the response body as JSON
+    breedInfo = await response.json();
+  } catch (error) {
+    // Log any errors that arise during the fetch operation
+    console.error('Error:', error);
+  }
+}
 function populateBreedInfo(breedInfo) {
   // Clears the div of any previous breed queries
   if (!$divBreedInfo) throw new Error('divBreedInfo does not exist');
@@ -51,6 +54,7 @@ function populateBreedInfo(breedInfo) {
   $divBreedWeightValue.className = 'breed-info-weight-value';
   const $divBreedWeightImperial = document.createElement('div');
   $divBreedWeightImperial.className = 'breed-info-weight-imperial';
+  if (!breedInfo.weight) throw new Error('breedInfo.weight does not exist');
   $divBreedWeightImperial.textContent = `&bull;Imperial: ${breedInfo.weight.imperial}`;
   const $divBreedWeightMetric = document.createElement('div');
   $divBreedWeightMetric.className = 'breed-info-weight-metric';
@@ -70,6 +74,7 @@ function populateBreedInfo(breedInfo) {
   $divBreedHeightValue.className = 'breed-info-height-value';
   const $divBreedHeightImperial = document.createElement('div');
   $divBreedHeightImperial.className = 'breed-info-height-imperial';
+  if (!breedInfo.height) throw new Error('$breedInfo.height does not exist');
   $divBreedHeightImperial.textContent = `&bull;Imperial: ${breedInfo.height.imperial}`;
   const $divBreedHeightMetric = document.createElement('div');
   $divBreedHeightMetric.className = 'breed-info-height-metric';
@@ -204,18 +209,28 @@ function populateBreedInfo(breedInfo) {
   $divBreedDescription.append($divBreedDescriptionValue);
   $divBreedInfo.append($divBreedDescription);
 }
-const breedInfo = {
-  weight: { imperial: '6 - 13', metric: '3 - 6' },
-  height: { imperial: '9 - 11.5', metric: '23 - 29' },
-  id: 1,
-  name: 'Affenpinscher',
-  bred_for: 'Small rodent hunting, lapdog',
-  breed_group: 'Toy',
-  life_span: '10 - 12 years',
-  temperament: 'Stubborn, Curious, Playful, Adventurous, Active, Fun-loving',
-  origin: 'Germany, France',
-  reference_image_id: 'BJa4kxc4X',
-};
+// breedInfo = {
+//   weight: { imperial: '6 - 13', metric: '3 - 6' },
+//   height: { imperial: '9 - 11.5', metric: '23 - 29' },
+//   id: 1,
+//   name: 'Affenpinscher',
+//   bred_for: 'Small rodent hunting, lapdog',
+//   breed_group: 'Toy',
+//   life_span: '10 - 12 years',
+//   temperament: 'Stubborn, Curious, Playful, Adventurous, Active, Fun-loving',
+//   origin: 'Germany, France',
+//   reference_image_id: 'BJa4kxc4X',
+// };
 if (!ppData.breedsList) throw new Error('ppData.breedsList does not exist');
 populateBreedsList(ppData.breedsList);
-populateBreedInfo(breedInfo);
+$selectBreedsList.addEventListener('change', async (event) => {
+  const eventTarget = event.target;
+  if (!eventTarget.value) {
+    $imgPageImage.src = 'images/breeds-page-image.jpg';
+  } else {
+    await fetchBreedInfo(Number(eventTarget.value));
+    populateBreedInfo(breedInfo);
+    console.log('breedInfo.reference_image_id', breedInfo.reference_image_id);
+    $imgPageImage.src = `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`;
+  }
+});

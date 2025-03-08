@@ -36,19 +36,7 @@ async function fetchBreedsList() {
         name: breed.name,
         id: breed.id,
       });
-      for (const trait in breed) {
-        let listedTrait = false;
-        for (let i = 0; i < traitsList.length; i++) {
-          if (trait === traitsList[i]) {
-            listedTrait = true;
-          }
-        }
-        if (listedTrait === false) {
-          traitsList.push(trait);
-        }
-      }
     }
-    console.log('traitsList:', traitsList);
     // Stores `breedList` for future use
     ppData.breedsList = breedsList;
     writeData(ppData);
