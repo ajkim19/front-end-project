@@ -101,8 +101,10 @@ nav {
   margin: 0 auto;
 }
 
-.page-image {
-  width: 90%;
+.home-page-image,
+.breeds-page-image {
+  max-width: 90%;
+  max-height: 293px;
   box-sizing: border-box;
   border-radius: 25px;
   margin: 20px auto;

@@ -2,7 +2,6 @@
 let ppData = {};
 ppData = readData();
 let breedsList = [];
-let traitsList = [];
 // Saves data to local storage for persistent data
 function writeData(ppData) {
   const ppDataJSON = JSON.stringify(ppData);
@@ -20,7 +19,6 @@ function readData() {
 async function fetchBreedsList() {
   // Clears any possible values assigned `breedList`
   breedsList = [];
-  traitsList = [];
   try {
     // Initiate a fetch request and await its response
     const response = await fetch('https://api.thedogapi.com/v1/breeds/');

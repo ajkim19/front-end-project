@@ -28,8 +28,10 @@ const $selectBreedsList = document.querySelector(
   '.breeds-list',
 ) as HTMLSelectElement;
 if (!$selectBreedsList) throw new Error('$selectBreedsList does not exist');
-const $imgPageImage = document.querySelector('.page-image') as HTMLImageElement;
-if (!$imgPageImage) throw new Error('$imgPageImage does not exist');
+const $imgBreedsPageImage = document.querySelector(
+  '.breeds-page-image',
+) as HTMLImageElement;
+if (!$imgBreedsPageImage) throw new Error('$imgBreedsPageImage does not exist');
 
 const $divBreedInfo = document.querySelector('.breed-info') as HTMLDivElement;
 
@@ -275,30 +277,16 @@ function populateBreedInfo(breedInfo: BreedInfo): void {
   $divBreedInfo.append($divBreedDescription);
 }
 
-// breedInfo = {
-//   weight: { imperial: '6 - 13', metric: '3 - 6' },
-//   height: { imperial: '9 - 11.5', metric: '23 - 29' },
-//   id: 1,
-//   name: 'Affenpinscher',
-//   bred_for: 'Small rodent hunting, lapdog',
-//   breed_group: 'Toy',
-//   life_span: '10 - 12 years',
-//   temperament: 'Stubborn, Curious, Playful, Adventurous, Active, Fun-loving',
-//   origin: 'Germany, France',
-//   reference_image_id: 'BJa4kxc4X',
-// };
-
 if (!ppData.breedsList) throw new Error('ppData.breedsList does not exist');
 populateBreedsList(ppData.breedsList);
 
 $selectBreedsList.addEventListener('change', async (event: Event) => {
   const eventTarget = event.target as HTMLOptionElement;
   if (!eventTarget.value) {
-    $imgPageImage.src = 'images/breeds-page-image.jpg';
+    $imgBreedsPageImage.src = 'images/breeds-page-image.jpg';
   } else {
     await fetchBreedInfo(Number(eventTarget.value));
     populateBreedInfo(breedInfo);
-    console.log('breedInfo.reference_image_id', breedInfo.reference_image_id);
-    $imgPageImage.src = `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`;
+    $imgBreedsPageImage.src = `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`;
   }
 });
