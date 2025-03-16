@@ -288,6 +288,18 @@ $selectBreedsList.addEventListener('change', async (event: Event) => {
   } else {
     await fetchBreedInfo(Number(eventTarget.value));
     populateBreedInfo(breedInfo);
-    $imgBreedsPageImage.src = `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`;
+    try {
+      const response = await fetch(
+        `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`,
+      );
+      if (!response.ok) {
+        throw new Error(`Image is unavailable. Status: ${response.status}`);
+      } else {
+        $imgBreedsPageImage.src = `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`;
+      }
+    } catch (error) {
+      $imgBreedsPageImage.src = 'images/image-unavailable-icon.avif';
+      console.error('Error:', error);
+    }
   }
 });
