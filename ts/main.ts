@@ -284,6 +284,7 @@ $selectBreedsList.addEventListener('change', async (event: Event) => {
   const eventTarget = event.target as HTMLOptionElement;
   if (!eventTarget.value) {
     $imgBreedsPageImage.src = 'images/breeds-page-image.jpg';
+    $divBreedInfo.innerHTML = '';
   } else {
     await fetchBreedInfo(Number(eventTarget.value));
     populateBreedInfo(breedInfo);
