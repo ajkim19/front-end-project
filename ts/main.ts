@@ -107,7 +107,6 @@ async function fetchBreedImages(breedID: number): Promise<void> {
     }
     // Await the parsing of the response body as JSON
     breedImages = await response.json();
-    console.log('breedImages:', breedImages);
   } catch (error) {
     // Log any errors that arise during the fetch operation
     console.error('Error:', error);
