@@ -207,4 +207,8 @@ nav {
     display: flex;
     flex-wrap: nowrap;
   }
+
+  .breed-info-breed-images-additional {
+    width: calc(100% / 3);
+  }
 }
