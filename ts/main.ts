@@ -55,6 +55,7 @@ let breedInfo: BreedInfo = {
   },
   life_span: '',
 };
+
 let breedImages: BreedImages[] = [];
 
 function populateBreedsList(breedsList: BreedID[]): void {
@@ -96,7 +97,7 @@ async function fetchBreedImages(breedID: number): Promise<void> {
   try {
     // Initiate a fetch request and await its response
     const response = await fetch(
-      `https://api.thedogapi.com/v1/images/search?breed_ids=${breedID}&include_breeds=true`,
+      `https://api.thedogapi.com/v1/images/search?breed_ids=${breedID}&include_breeds=true&limit=25`,
     );
 
     // Ensure the response status indicates success
@@ -113,9 +114,7 @@ async function fetchBreedImages(breedID: number): Promise<void> {
   }
 }
 
-fetchBreedImages(2);
-
-function populateBreedInfo(breedInfo: BreedInfo): void {
+async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   // Clears the div of any previous breed queries
   if (!$divBreedInfo) throw new Error('divBreedInfo does not exist');
   $divBreedInfo.innerHTML = '';
@@ -332,7 +331,7 @@ function populateBreedInfo(breedInfo: BreedInfo): void {
 
   // Adds a div element for breed images
   const $divBreedImages = document.createElement('div') as HTMLDivElement;
-  $divBreedImages.className = 'breed-info-details breed-info-breed-images';
+  $divBreedImages.className = 'breed-info-breed-images';
   const $divBreedImagesLabel = document.createElement('div') as HTMLDivElement;
   $divBreedImagesLabel.className =
     'breed-info-breed-images-label breed-info-label';
@@ -342,8 +341,24 @@ function populateBreedInfo(breedInfo: BreedInfo): void {
 
   // Adds random images of the breed
   if (!breedInfo) throw new Error('breedInfo does not exist');
-  fetchBreedImages(breedInfo.id);
-
+  await fetchBreedImages(breedInfo.id);
+  let numImg = 0;
+  for (let i = 0; numImg < 6 && i < breedImages.length; i++) {
+    try {
+      const response = await fetch(breedImages[i].url);
+      if (!response.ok) {
+        throw new Error('Image is not available');
+      } else {
+        const $imgBreedImage = document.createElement('img');
+        $imgBreedImage.src = breedImages[i].url;
+        $imgBreedImage.className = 'breed-info-breed-images-additional';
+        $divBreedImagesValue.append($imgBreedImage);
+        numImg++;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
   $divBreedImages.append($divBreedImagesLabel);
   $divBreedImages.append($divBreedImagesValue);
   $divBreedInfo.append($divBreedImages);

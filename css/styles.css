@@ -166,6 +166,13 @@ nav {
   padding-right: 10px;
 }
 
+.breed-info-breed-images-additional {
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: start;
+  width: 50%;
+}
+
 /* Desktop View */
 @media screen and (width >= 720px) {
   #home-tab,
