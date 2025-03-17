@@ -9,11 +9,11 @@ interface Height {
 }
 
 interface BreedInfo {
-  id?: number;
-  name?: string;
-  weight?: Weight;
-  height?: Height;
-  life_span?: string;
+  id: number;
+  name: string;
+  weight: Weight;
+  height: Height;
+  life_span: string;
   reference_image_id?: string;
   temperament?: string;
   breed_group?: string;
@@ -42,7 +42,19 @@ if (!$imgBreedsPageImage) throw new Error('$imgBreedsPageImage does not exist');
 
 const $divBreedInfo = document.querySelector('.breed-info') as HTMLDivElement;
 
-let breedInfo: BreedInfo = {};
+let breedInfo: BreedInfo = {
+  id: 0,
+  name: '',
+  weight: {
+    imperial: '',
+    metric: '',
+  },
+  height: {
+    imperial: '',
+    metric: '',
+  },
+  life_span: '',
+};
 let breedImages: BreedImages[] = [];
 
 function populateBreedsList(breedsList: BreedID[]): void {
@@ -329,6 +341,8 @@ function populateBreedInfo(breedInfo: BreedInfo): void {
   $divBreedImagesValue.className = 'breed-info-breed-images-value';
 
   // Adds random images of the breed
+  if (!breedInfo) throw new Error('breedInfo does not exist');
+  fetchBreedImages(breedInfo.id);
 
   $divBreedImages.append($divBreedImagesLabel);
   $divBreedImages.append($divBreedImagesValue);
