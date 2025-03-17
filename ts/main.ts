@@ -24,6 +24,13 @@ interface BreedInfo {
   description?: string;
 }
 
+interface BreedImages {
+  id: string;
+  url: string;
+  width: number;
+  height: number;
+}
+
 const $selectBreedsList = document.querySelector(
   '.breeds-list',
 ) as HTMLSelectElement;
@@ -36,6 +43,7 @@ if (!$imgBreedsPageImage) throw new Error('$imgBreedsPageImage does not exist');
 const $divBreedInfo = document.querySelector('.breed-info') as HTMLDivElement;
 
 let breedInfo: BreedInfo = {};
+let breedImages: BreedImages[] = [];
 
 function populateBreedsList(breedsList: BreedID[]): void {
   for (const breed of breedsList) {
@@ -70,6 +78,30 @@ async function fetchBreedInfo(breedID: number): Promise<void> {
     console.error('Error:', error);
   }
 }
+
+// Obtains random images of the breed
+async function fetchBreedImages(breedID: number): Promise<void> {
+  try {
+    // Initiate a fetch request and await its response
+    const response = await fetch(
+      `https://api.thedogapi.com/v1/images/search?breed_ids=${breedID}&include_breeds=true`,
+    );
+
+    // Ensure the response status indicates success
+    if (!response.ok) {
+      // If the status code is not in the successful range, throw an error
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    // Await the parsing of the response body as JSON
+    breedImages = await response.json();
+    console.log('breedImages:', breedImages);
+  } catch (error) {
+    // Log any errors that arise during the fetch operation
+    console.error('Error:', error);
+  }
+}
+
+fetchBreedImages(2);
 
 function populateBreedInfo(breedInfo: BreedInfo): void {
   // Clears the div of any previous breed queries
@@ -254,10 +286,10 @@ function populateBreedInfo(breedInfo: BreedInfo): void {
   $divBreedHistoryLabel.textContent = 'History: ';
   const $divBreedHistoryValue = document.createElement('div') as HTMLDivElement;
   $divBreedHistoryValue.className = 'breed-info-breed-history-value';
-  if (!breedInfo.origin) {
+  if (!breedInfo.history) {
     $divBreedHistoryValue.textContent = 'N/A';
   } else {
-    $divBreedHistoryValue.textContent = `${breedInfo.origin}`;
+    $divBreedHistoryValue.textContent = `${breedInfo.history}`;
   }
   $divBreedHistory.append($divBreedHistoryLabel);
   $divBreedHistory.append($divBreedHistoryValue);
@@ -277,14 +309,30 @@ function populateBreedInfo(breedInfo: BreedInfo): void {
     'div',
   ) as HTMLDivElement;
   $divBreedDescriptionValue.className = 'breed-info-breed-description-value';
-  if (!breedInfo.origin) {
+  if (!breedInfo.description) {
     $divBreedDescriptionValue.textContent = 'N/A';
   } else {
-    $divBreedDescriptionValue.textContent = `${breedInfo.origin}`;
+    $divBreedDescriptionValue.textContent = `${breedInfo.description}`;
   }
   $divBreedDescription.append($divBreedDescriptionLabel);
   $divBreedDescription.append($divBreedDescriptionValue);
   $divBreedInfo.append($divBreedDescription);
+
+  // Adds a div element for breed images
+  const $divBreedImages = document.createElement('div') as HTMLDivElement;
+  $divBreedImages.className = 'breed-info-details breed-info-breed-images';
+  const $divBreedImagesLabel = document.createElement('div') as HTMLDivElement;
+  $divBreedImagesLabel.className =
+    'breed-info-breed-images-label breed-info-label';
+  $divBreedImagesLabel.textContent = 'Additional Images: ';
+  const $divBreedImagesValue = document.createElement('div') as HTMLDivElement;
+  $divBreedImagesValue.className = 'breed-info-breed-images-value';
+
+  // Adds random images of the breed
+
+  $divBreedImages.append($divBreedImagesLabel);
+  $divBreedImages.append($divBreedImagesValue);
+  $divBreedInfo.append($divBreedImages);
 }
 
 if (!ppData.breedsList) throw new Error('ppData.breedsList does not exist');

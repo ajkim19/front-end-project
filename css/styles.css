@@ -161,7 +161,7 @@ nav {
 }
 
 .breed-info-label {
-  text-decoration: underline;
+  font-weight: 700;
   padding-bottom: 5px;
   padding-right: 10px;
 }
