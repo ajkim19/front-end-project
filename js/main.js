@@ -62,7 +62,6 @@ async function fetchBreedImages(breedID) {
     }
     // Await the parsing of the response body as JSON
     breedImages = await response.json();
-    console.log('breedImages:', breedImages);
   } catch (error) {
     // Log any errors that arise during the fetch operation
     console.error('Error:', error);
@@ -73,10 +72,19 @@ async function populateBreedInfo(breedInfo) {
   if (!$divBreedInfo) throw new Error('divBreedInfo does not exist');
   $divBreedInfo.innerHTML = '';
   // Adds a div element for breed name
-  const $h2BreedName = document.createElement('h2');
-  $h2BreedName.className = 'breed-info-name';
-  $h2BreedName.textContent = `${breedInfo.name}`;
-  $divBreedInfo.append($h2BreedName);
+  const $divBreedName = document.createElement('div');
+  $divBreedName.className = 'flex breed-info-name';
+  const $iBreedNameStar = document.createElement('i');
+  $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
+  const $divBreedNameTitle = document.createElement('div');
+  $divBreedNameTitle.className = 'flex breed-info-name-title-div';
+  const $h2BreedNameTitle = document.createElement('h2');
+  $h2BreedNameTitle.className = 'breed-info-name-title-h2';
+  $h2BreedNameTitle.textContent = `${breedInfo.name}`;
+  $divBreedName.append($iBreedNameStar);
+  $divBreedNameTitle.append($h2BreedNameTitle);
+  $divBreedName.append($divBreedNameTitle);
+  $divBreedInfo.append($divBreedName);
   // Adds a div element for breed weight
   const $divBreedWeight = document.createElement('div');
   $divBreedWeight.className = 'breed-info-details breed-info-weight';

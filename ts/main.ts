@@ -119,10 +119,19 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedInfo.innerHTML = '';
 
   // Adds a div element for breed name
-  const $h2BreedName = document.createElement('h2') as HTMLElement;
-  $h2BreedName.className = 'breed-info-name';
-  $h2BreedName.textContent = `${breedInfo.name}`;
-  $divBreedInfo.append($h2BreedName);
+  const $divBreedName = document.createElement('div') as HTMLElement;
+  $divBreedName.className = 'flex breed-info-name';
+  const $iBreedNameStar = document.createElement('i') as HTMLElement;
+  $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
+  const $divBreedNameTitle = document.createElement('div') as HTMLElement;
+  $divBreedNameTitle.className = 'flex breed-info-name-title-div';
+  const $h2BreedNameTitle = document.createElement('h2') as HTMLElement;
+  $h2BreedNameTitle.className = 'breed-info-name-title-h2';
+  $h2BreedNameTitle.textContent = `${breedInfo.name}`;
+  $divBreedName.append($iBreedNameStar);
+  $divBreedNameTitle.append($h2BreedNameTitle);
+  $divBreedName.append($divBreedNameTitle);
+  $divBreedInfo.append($divBreedName);
 
   // Adds a div element for breed weight
   const $divBreedWeight = document.createElement('div') as HTMLDivElement;
