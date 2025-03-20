@@ -39,6 +39,10 @@ const $imgBreedsPageImage = document.querySelector(
   '.breeds-page-image',
 ) as HTMLImageElement;
 if (!$imgBreedsPageImage) throw new Error('$imgBreedsPageImage does not exist');
+const $iBreedInfoNameStar = document.querySelector(
+  '.breed-info-name-star',
+) as HTMLElement;
+if (!$iBreedInfoNameStar) throw new Error('$iBreedInfoNameStar does not exist');
 
 const $divBreedInfo = document.querySelector('.breed-info') as HTMLDivElement;
 
@@ -396,5 +400,14 @@ $selectBreedsList.addEventListener('change', async (event: Event) => {
       $imgBreedsPageImage.src = 'images/image-unavailable-icon.avif';
       console.error('Error:', error);
     }
+  }
+});
+
+$iBreedInfoNameStar.addEventListener('click', (event: Event) => {
+  const eventTarget = event.target as HTMLElement;
+  if (eventTarget.classList.contains('fa-regular')) {
+    eventTarget.className = 'fa-solid fa-star breed-info-name-star';
+  } else {
+    eventTarget.className = 'fa-regular fa-star breed-info-name-star';
   }
 });
