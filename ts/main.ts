@@ -14,7 +14,7 @@ interface BreedInfo {
   weight: Weight;
   height: Height;
   life_span: string;
-  reference_image_id?: string;
+  reference_image_id: string;
   temperament?: string;
   breed_group?: string;
   bred_for?: string;
@@ -39,12 +39,8 @@ const $imgBreedsPageImage = document.querySelector(
   '.breeds-page-image',
 ) as HTMLImageElement;
 if (!$imgBreedsPageImage) throw new Error('$imgBreedsPageImage does not exist');
-const $iBreedInfoNameStar = document.querySelector(
-  '.breed-info-name-star',
-) as HTMLElement;
-if (!$iBreedInfoNameStar) throw new Error('$iBreedInfoNameStar does not exist');
-
 const $divBreedInfo = document.querySelector('.breed-info') as HTMLDivElement;
+if (!$divBreedInfo) throw new Error('$divBreedInfo does not exist');
 
 let breedInfo: BreedInfo = {
   id: 0,
@@ -58,11 +54,13 @@ let breedInfo: BreedInfo = {
     metric: '',
   },
   life_span: '',
+  reference_image_id: '',
 };
 
 let breedImages: BreedImages[] = [];
 
-function populateBreedsList(breedsList: BreedID[]): void {
+async function populateBreedsList(breedsList: BreedID[]): Promise<void> {
+  await fetchBreedsList();
   for (const breed of breedsList) {
     // Creates 'option' element for each breed
     const $optionBreed: HTMLOptionElement = document.createElement('option');
@@ -376,7 +374,6 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedInfo.append($divBreedImages);
 }
 
-if (!ppData.breedsList) throw new Error('ppData.breedsList does not exist');
 populateBreedsList(ppData.breedsList);
 
 $selectBreedsList.addEventListener('change', async (event: Event) => {
@@ -403,11 +400,26 @@ $selectBreedsList.addEventListener('change', async (event: Event) => {
   }
 });
 
-$iBreedInfoNameStar.addEventListener('click', (event: Event) => {
+$divBreedInfo.addEventListener('click', (event: Event) => {
+  // if (!ppData.favoritesList)
+  //   throw new Error('ppData.favoritesList does not exist');
   const eventTarget = event.target as HTMLElement;
-  if (eventTarget.classList.contains('fa-regular')) {
-    eventTarget.className = 'fa-solid fa-star breed-info-name-star';
-  } else {
-    eventTarget.className = 'fa-regular fa-star breed-info-name-star';
+  if (eventTarget.classList.contains('fa-star')) {
+    if (eventTarget.classList.contains('fa-regular')) {
+      eventTarget.className = 'fa-solid fa-star breed-info-name-star';
+      ppData.favoritesList.push({
+        name: breedInfo.name,
+        id: breedInfo.id,
+        reference_image_id: breedInfo.reference_image_id,
+      } as BreedIDImage);
+    } else {
+      eventTarget.className = 'fa-regular fa-star breed-info-name-star';
+      for (let i = 0; i < ppData.favoritesList.length; i++) {
+        if (breedInfo.id === ppData.favoritesList[i].id) {
+          ppData.favoritesList.splice(i, 1);
+        }
+      }
+    }
   }
+  writeData(ppData);
 });

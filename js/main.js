@@ -4,6 +4,7 @@ if (!$selectBreedsList) throw new Error('$selectBreedsList does not exist');
 const $imgBreedsPageImage = document.querySelector('.breeds-page-image');
 if (!$imgBreedsPageImage) throw new Error('$imgBreedsPageImage does not exist');
 const $divBreedInfo = document.querySelector('.breed-info');
+if (!$divBreedInfo) throw new Error('$divBreedInfo does not exist');
 let breedInfo = {
   id: 0,
   name: '',
@@ -16,9 +17,37 @@ let breedInfo = {
     metric: '',
   },
   life_span: '',
+  reference_image_id: '',
 };
 let breedImages = [];
-function populateBreedsList(breedsList) {
+async function fetchBreedsList() {
+  // Clears any possible values assigned `breedList`
+  ppData.breedsList.length = 0;
+  try {
+    // Initiate a fetch request and await its response
+    const response = await fetch('https://api.thedogapi.com/v1/breeds/');
+    // Ensure the response status indicates success
+    if (!response.ok) {
+      // If the status code is not in the successful range, throw an error
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    // Await the parsing of the response body as JSON
+    const breeds = await response.json();
+    for (const breed of breeds) {
+      ppData.breedsList.push({
+        name: breed.name,
+        id: breed.id,
+      });
+    }
+    // Stores `breedList` for future use
+    writeData(ppData);
+  } catch (error) {
+    // Log any errors that arise during the fetch operation
+    console.error('Error:', error);
+  }
+}
+async function populateBreedsList(breedsList) {
+  await fetchBreedsList();
   for (const breed of breedsList) {
     // Creates 'option' element for each breed
     const $optionBreed = document.createElement('option');
@@ -292,7 +321,6 @@ async function populateBreedInfo(breedInfo) {
   $divBreedImages.append($divBreedImagesValue);
   $divBreedInfo.append($divBreedImages);
 }
-if (!ppData.breedsList) throw new Error('ppData.breedsList does not exist');
 populateBreedsList(ppData.breedsList);
 $selectBreedsList.addEventListener('change', async (event) => {
   const eventTarget = event.target;
@@ -316,4 +344,27 @@ $selectBreedsList.addEventListener('change', async (event) => {
       console.error('Error:', error);
     }
   }
+});
+$divBreedInfo.addEventListener('click', (event) => {
+  // if (!ppData.favoritesList)
+  //   throw new Error('ppData.favoritesList does not exist');
+  const eventTarget = event.target;
+  if (eventTarget.classList.contains('fa-star')) {
+    if (eventTarget.classList.contains('fa-regular')) {
+      eventTarget.className = 'fa-solid fa-star breed-info-name-star';
+      ppData.favoritesList.push({
+        name: breedInfo.name,
+        id: breedInfo.id,
+        reference_image_id: breedInfo.reference_image_id,
+      });
+    } else {
+      eventTarget.className = 'fa-regular fa-star breed-info-name-star';
+      for (let i = 0; i < ppData.favoritesList.length; i++) {
+        if (breedInfo.id === ppData.favoritesList[i].id) {
+          ppData.favoritesList.splice(i, 1);
+        }
+      }
+    }
+  }
+  console.log('ppData', ppData);
 });
