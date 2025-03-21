@@ -5,6 +5,11 @@ const $imgBreedsPageImage = document.querySelector('.breeds-page-image');
 if (!$imgBreedsPageImage) throw new Error('$imgBreedsPageImage does not exist');
 const $divBreedInfo = document.querySelector('.breed-info');
 if (!$divBreedInfo) throw new Error('$divBreedInfo does not exist');
+const $imgFavoritesPageImage = document.querySelector('.favorites-page-image');
+if (!$imgFavoritesPageImage)
+  throw new Error('$divFavBreedsPageImage does not exist');
+const $divFavoritesList = document.querySelector('.favorites-list');
+if (!$divFavoritesList) throw new Error('$divFavoritesList does not exist');
 let breedInfo = {
   id: 0,
   name: '',
@@ -332,7 +337,33 @@ async function populateBreedInfo(breedInfo) {
   $divBreedImages.append($divBreedImagesValue);
   $divBreedInfo.append($divBreedImages);
 }
+async function populateFavorites(favoritesList) {
+  try {
+    const response = await fetch(
+      `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`,
+    );
+    if (!response.ok) {
+      throw new Error(`Image is unavailable. Status: ${response.status}`);
+    } else {
+      $imgFavoritesPageImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`;
+    }
+  } catch (error) {
+    $imgFavoritesPageImage.src = 'images/image-unavailable-icon.avif';
+    console.error('Error:', error);
+  }
+  // // Clears the div of previous favorites list
+  // if (!$divFavoritesList) throw new Error('divBreedInfo does not exist');
+  // $divFavoritesList.innerHTML = '';
+  // // Adds a div element for a favorite breed
+  // const $divFavBreed = document.createElement('div');
+  // $divFavBreed.className = 'flex favorite-breed-listed';
+  // const $divBreedName = document.createElement('div') as HTMLElement;
+  // $divBreedName.className = 'flex breed-info-name';
+  // const $iBreedNameStar = document.createElement('i') as HTMLElement;
+}
 populateBreedsList(ppData.breedsList);
+populateFavorites(ppData.favoritesList);
+console.log(ppData);
 $selectBreedsList.addEventListener('change', async (event) => {
   const eventTarget = event.target;
   if (!eventTarget.value) {
@@ -378,5 +409,4 @@ $divBreedInfo.addEventListener('click', (event) => {
     }
   }
   writeData(ppData);
-  console.log('ppData:', ppData);
 });

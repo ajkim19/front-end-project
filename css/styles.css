@@ -86,7 +86,7 @@ nav {
   border: 2px solid white !important;
 }
 
-.hide-view {
+.hidden {
   display: none !important;
 }
 
@@ -103,7 +103,8 @@ nav {
 }
 
 .home-page-image,
-.breeds-page-image {
+.breeds-page-image,
+.favorites-page-image {
   max-width: 90%;
   max-height: 293px;
   box-sizing: border-box;
