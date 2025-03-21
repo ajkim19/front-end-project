@@ -104,7 +104,18 @@ async function populateBreedInfo(breedInfo) {
   const $divBreedName = document.createElement('div');
   $divBreedName.className = 'flex breed-info-name';
   const $iBreedNameStar = document.createElement('i');
-  $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
+  let favoriteBreed = false;
+  for (let i = 0; i < ppData.favoritesList.length; i++) {
+    if (ppData.favoritesList[i].id === breedInfo.id) {
+      favoriteBreed = true;
+    }
+  }
+  if (favoriteBreed === true) {
+    $iBreedNameStar.className = 'fa-solid fa-star breed-info-name-star';
+  } else {
+    $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
+  }
+  console.log('ppData:', ppData);
   const $divBreedNameTitle = document.createElement('div');
   $divBreedNameTitle.className = 'flex breed-info-name-title-div';
   const $h2BreedNameTitle = document.createElement('h2');
@@ -366,5 +377,6 @@ $divBreedInfo.addEventListener('click', (event) => {
       }
     }
   }
-  console.log('ppData', ppData);
+  writeData(ppData);
+  console.log('ppData:', ppData);
 });

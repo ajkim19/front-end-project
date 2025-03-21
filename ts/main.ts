@@ -154,7 +154,18 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   const $divBreedName = document.createElement('div') as HTMLElement;
   $divBreedName.className = 'flex breed-info-name';
   const $iBreedNameStar = document.createElement('i') as HTMLElement;
-  $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
+  let favoriteBreed = false;
+  for (let i = 0; i < ppData.favoritesList.length; i++) {
+    if (ppData.favoritesList[i].id === breedInfo.id) {
+      favoriteBreed = true;
+    }
+  }
+  if (favoriteBreed === true) {
+    $iBreedNameStar.className = 'fa-solid fa-star breed-info-name-star';
+  } else {
+    $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
+  }
+  console.log('ppData:', ppData);
   const $divBreedNameTitle = document.createElement('div') as HTMLElement;
   $divBreedNameTitle.className = 'flex breed-info-name-title-div';
   const $h2BreedNameTitle = document.createElement('h2') as HTMLElement;
@@ -452,4 +463,5 @@ $divBreedInfo.addEventListener('click', (event: Event) => {
     }
   }
   writeData(ppData);
+  console.log('ppData:', ppData);
 });
