@@ -59,6 +59,36 @@ let breedInfo: BreedInfo = {
 
 let breedImages: BreedImages[] = [];
 
+async function fetchBreedsList(): Promise<void> {
+  // Clears any possible values assigned `breedList`
+  ppData.breedsList.length = 0;
+
+  try {
+    // Initiate a fetch request and await its response
+    const response = await fetch('https://api.thedogapi.com/v1/breeds/');
+
+    // Ensure the response status indicates success
+    if (!response.ok) {
+      // If the status code is not in the successful range, throw an error
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    // Await the parsing of the response body as JSON
+    const breeds = await response.json();
+    for (const breed of breeds) {
+      ppData.breedsList.push({
+        name: breed.name,
+        id: breed.id,
+      } as BreedID);
+    }
+    // Stores `breedList` for future use
+    writeData(ppData);
+  } catch (error) {
+    // Log any errors that arise during the fetch operation
+    console.error('Error:', error);
+  }
+}
+
 async function populateBreedsList(breedsList: BreedID[]): Promise<void> {
   await fetchBreedsList();
   for (const breed of breedsList) {
