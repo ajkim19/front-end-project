@@ -559,5 +559,4 @@ $divFavoritesList.addEventListener('change', (event: Event) => {
   const newRank = eventTarget.value;
   const favBreed = ppData.favoritesList.splice(Number(oldRank) - 1, 1)[0];
   ppData.favoritesList.splice(Number(newRank) - 1, 0, favBreed);
-  populateFavorites(ppData.favoritesList);
 });
