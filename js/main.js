@@ -361,8 +361,12 @@ async function populateFavorites(favoritesList) {
   for (let i = 0; i < favoritesList.length; i++) {
     const $divFavBreedRow = document.createElement('div');
     $divFavBreedRow.className = 'flex favorite-breed-row';
+    $divFavBreedRow.setAttribute('rank', (i + 1).toString());
     const $inputRank = document.createElement('input');
     $inputRank.className = 'favorite-breed-rank';
+    $inputRank.type = 'number';
+    $inputRank.min = '1';
+    $inputRank.max = favoritesList.length.toString();
     $inputRank.value = (i + 1).toString();
     const $divFavBreedInfo = document.createElement('div');
     $divFavBreedInfo.className = 'flex favorite-breed-info';
@@ -449,15 +453,14 @@ $ulNavBarNav.addEventListener('click', (event) => {
     }
   }
 });
+console.log('ppData.favoritesList', ppData.favoritesList);
 $divFavoritesList.addEventListener('change', (event) => {
   const eventTarget = event.target;
-  console.log(eventTarget);
-  // for (const view of $dataViews) {
-  //   const $viewHTMLElement = view as HTMLElement;
-  //   if ($viewHTMLElement.dataset.view === eventTarget.id) {
-  //     $viewHTMLElement.className = 'view';
-  //   } else {
-  //     $viewHTMLElement.className = 'view hidden';
-  //   }
-  // }
+  const breedRank = eventTarget.closest('.favorite-breed-row');
+  const oldRank = breedRank?.getAttribute('rank');
+  const newRank = eventTarget.value;
+  const favBreed = ppData.favoritesList.splice(Number(oldRank) - 1, 1)[0];
+  ppData.favoritesList.splice(Number(newRank) - 1, 0, favBreed);
+  writeData(ppData);
+  populateFavorites(ppData.favoritesList);
 });
