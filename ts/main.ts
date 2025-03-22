@@ -50,6 +50,10 @@ const $divFavoritesList = document.querySelector(
   '.favorites-list',
 ) as HTMLDivElement;
 if (!$divFavoritesList) throw new Error('$divFavoritesList does not exist');
+const $ulNavBarNav = document.querySelector('.navbar-nav') as HTMLUListElement;
+if (!$ulNavBarNav) throw new Error('$ulNavBarNav does not exist');
+const $dataViews = document.querySelectorAll('.view');
+if (!$dataViews) throw new Error('$dataViews does not exist');
 
 let breedInfo: BreedInfo = {
   id: 0,
@@ -514,4 +518,16 @@ $divBreedInfo.addEventListener('click', (event: Event) => {
     }
   }
   writeData(ppData);
+});
+
+$ulNavBarNav.addEventListener('click', (event: Event) => {
+  const eventTarget = event.target as HTMLElement;
+  for (const view of $dataViews) {
+    const $viewHTMLElement = view as HTMLElement;
+    if ($viewHTMLElement.dataset.view === eventTarget.id) {
+      $viewHTMLElement.className = 'view';
+    } else {
+      $viewHTMLElement.className = 'view hidden';
+    }
+  }
 });

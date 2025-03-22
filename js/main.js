@@ -10,6 +10,10 @@ if (!$imgFavoritesPageImage)
   throw new Error('$divFavBreedInfosPageImage does not exist');
 const $divFavoritesList = document.querySelector('.favorites-list');
 if (!$divFavoritesList) throw new Error('$divFavoritesList does not exist');
+const $ulNavBarNav = document.querySelector('.navbar-nav');
+if (!$ulNavBarNav) throw new Error('$ulNavBarNav does not exist');
+const $dataViews = document.querySelectorAll('.view');
+if (!$dataViews) throw new Error('$dataViews does not exist');
 let breedInfo = {
   id: 0,
   name: '',
@@ -420,4 +424,15 @@ $divBreedInfo.addEventListener('click', (event) => {
     }
   }
   writeData(ppData);
+});
+$ulNavBarNav.addEventListener('click', (event) => {
+  const eventTarget = event.target;
+  for (const view of $dataViews) {
+    const $viewHTMLElement = view;
+    if ($viewHTMLElement.dataset.view === eventTarget.id) {
+      $viewHTMLElement.className = 'view';
+    } else {
+      $viewHTMLElement.className = 'view hidden';
+    }
+  }
 });
