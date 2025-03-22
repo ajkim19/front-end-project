@@ -45,7 +45,7 @@ const $imgFavoritesPageImage = document.querySelector(
   '.favorites-page-image',
 ) as HTMLImageElement;
 if (!$imgFavoritesPageImage)
-  throw new Error('$divFavBreedsPageImage does not exist');
+  throw new Error('$divFavBreedInfosPageImage does not exist');
 const $divFavoritesList = document.querySelector(
   '.favorites-list',
 ) as HTMLDivElement;
@@ -160,7 +160,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedInfo.innerHTML = '';
 
   // Adds a div element for breed name
-  const $divBreedName = document.createElement('div') as HTMLElement;
+  const $divBreedName = document.createElement('div') as HTMLDivElement;
   $divBreedName.className = 'flex breed-info-name';
   const $iBreedNameStar = document.createElement('i') as HTMLElement;
   let favoriteBreed = false;
@@ -175,7 +175,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
     $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
   }
   console.log('ppData:', ppData);
-  const $divBreedNameTitle = document.createElement('div') as HTMLElement;
+  const $divBreedNameTitle = document.createElement('div') as HTMLDivElement;
   $divBreedNameTitle.className = 'flex breed-info-name-title-div';
   const $h2BreedNameTitle = document.createElement('h2') as HTMLElement;
   $h2BreedNameTitle.className = 'breed-info-name-title-h2';
@@ -439,16 +439,29 @@ async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
     console.error('Error:', error);
   }
 
-  // // Clears the div of previous favorites list
-  // if (!$divFavoritesList) throw new Error('divBreedInfo does not exist');
-  // $divFavoritesList.innerHTML = '';
+  // Clears the div of previous favorites list
+  if (!$divFavoritesList) throw new Error('divBreedInfo does not exist');
+  $divFavoritesList.innerHTML = '';
 
-  // // Adds a div element for a favorite breed
-  // const $divFavBreed = document.createElement('div');
-  // $divFavBreed.className = 'flex favorite-breed-listed';
-  // const $divBreedName = document.createElement('div') as HTMLElement;
-  // $divBreedName.className = 'flex breed-info-name';
-  // const $iBreedNameStar = document.createElement('i') as HTMLElement;
+  // Create a listing for a favorite breeds
+  for (let i = 0; i < favoritesList.length; i++) {
+    const $divFavBreedRow = document.createElement('div') as HTMLDivElement;
+    $divFavBreedRow.className = 'flex favorite-breed-row';
+    const $divFavBreedInfo = document.createElement('div') as HTMLDivElement;
+    $divFavBreedInfo.className = 'flex favorite-breed-info';
+    const $divFavBreedInfoName = document.createElement(
+      'div',
+    ) as HTMLDivElement;
+    $divFavBreedInfoName.className = 'favorite-breed-info-name';
+    $divFavBreedInfoName.textContent = `${favoritesList[i].name}`;
+    const $imgFavBreedImage = document.createElement('img') as HTMLImageElement;
+    $imgFavBreedImage.className = 'favorite-breed-info-image';
+    $imgFavBreedImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[i].reference_image_id}.jpg`;
+    $divFavBreedInfo.append($divFavBreedInfoName);
+    $divFavBreedInfo.append($imgFavBreedImage);
+    $divFavBreedRow.append($divFavBreedInfo);
+    $divFavoritesList.append($divFavBreedRow);
+  }
 }
 
 populateBreedsList(ppData.breedsList);

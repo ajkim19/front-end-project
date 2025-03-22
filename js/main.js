@@ -7,7 +7,7 @@ const $divBreedInfo = document.querySelector('.breed-info');
 if (!$divBreedInfo) throw new Error('$divBreedInfo does not exist');
 const $imgFavoritesPageImage = document.querySelector('.favorites-page-image');
 if (!$imgFavoritesPageImage)
-  throw new Error('$divFavBreedsPageImage does not exist');
+  throw new Error('$divFavBreedInfosPageImage does not exist');
 const $divFavoritesList = document.querySelector('.favorites-list');
 if (!$divFavoritesList) throw new Error('$divFavoritesList does not exist');
 let breedInfo = {
@@ -351,15 +351,26 @@ async function populateFavorites(favoritesList) {
     $imgFavoritesPageImage.src = 'images/image-unavailable-icon.avif';
     console.error('Error:', error);
   }
-  // // Clears the div of previous favorites list
-  // if (!$divFavoritesList) throw new Error('divBreedInfo does not exist');
-  // $divFavoritesList.innerHTML = '';
-  // // Adds a div element for a favorite breed
-  // const $divFavBreed = document.createElement('div');
-  // $divFavBreed.className = 'flex favorite-breed-listed';
-  // const $divBreedName = document.createElement('div') as HTMLElement;
-  // $divBreedName.className = 'flex breed-info-name';
-  // const $iBreedNameStar = document.createElement('i') as HTMLElement;
+  // Clears the div of previous favorites list
+  if (!$divFavoritesList) throw new Error('divBreedInfo does not exist');
+  $divFavoritesList.innerHTML = '';
+  // Create a listing for a favorite breeds
+  for (let i = 0; i < favoritesList.length; i++) {
+    const $divFavBreedRow = document.createElement('div');
+    $divFavBreedRow.className = 'flex favorite-breed-row';
+    const $divFavBreedInfo = document.createElement('div');
+    $divFavBreedInfo.className = 'flex favorite-breed-info';
+    const $divFavBreedInfoName = document.createElement('div');
+    $divFavBreedInfoName.className = 'favorite-breed-info-name';
+    $divFavBreedInfoName.textContent = `${favoritesList[i].name}`;
+    const $imgFavBreedImage = document.createElement('img');
+    $imgFavBreedImage.className = 'favorite-breed-info-image';
+    $imgFavBreedImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[i].reference_image_id}.jpg`;
+    $divFavBreedInfo.append($divFavBreedInfoName);
+    $divFavBreedInfo.append($imgFavBreedImage);
+    $divFavBreedRow.append($divFavBreedInfo);
+    $divFavoritesList.append($divFavBreedRow);
+  }
 }
 populateBreedsList(ppData.breedsList);
 populateFavorites(ppData.favoritesList);
