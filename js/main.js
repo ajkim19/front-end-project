@@ -361,6 +361,9 @@ async function populateFavorites(favoritesList) {
   for (let i = 0; i < favoritesList.length; i++) {
     const $divFavBreedRow = document.createElement('div');
     $divFavBreedRow.className = 'flex favorite-breed-row';
+    const $inputRank = document.createElement('input');
+    $inputRank.className = 'favorite-breed-rank';
+    $inputRank.value = (i + 1).toString();
     const $divFavBreedInfo = document.createElement('div');
     $divFavBreedInfo.className = 'flex favorite-breed-info';
     const $divFavBreedInfoName = document.createElement('div');
@@ -369,6 +372,7 @@ async function populateFavorites(favoritesList) {
     const $imgFavBreedImage = document.createElement('img');
     $imgFavBreedImage.className = 'favorite-breed-info-image';
     $imgFavBreedImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[i].reference_image_id}.jpg`;
+    $divFavBreedRow.append($inputRank);
     $divFavBreedInfo.append($divFavBreedInfoName);
     $divFavBreedInfo.append($imgFavBreedImage);
     $divFavBreedRow.append($divFavBreedInfo);
