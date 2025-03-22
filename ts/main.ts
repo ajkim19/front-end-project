@@ -14,7 +14,7 @@ interface BreedInfo {
   weight: Weight;
   height: Height;
   life_span: string;
-  reference_image_id?: string;
+  reference_image_id: string;
   temperament?: string;
   breed_group?: string;
   bred_for?: string;
@@ -39,8 +39,21 @@ const $imgBreedsPageImage = document.querySelector(
   '.breeds-page-image',
 ) as HTMLImageElement;
 if (!$imgBreedsPageImage) throw new Error('$imgBreedsPageImage does not exist');
-
 const $divBreedInfo = document.querySelector('.breed-info') as HTMLDivElement;
+if (!$divBreedInfo) throw new Error('$divBreedInfo does not exist');
+const $imgFavoritesPageImage = document.querySelector(
+  '.favorites-page-image',
+) as HTMLImageElement;
+if (!$imgFavoritesPageImage)
+  throw new Error('$divFavBreedInfosPageImage does not exist');
+const $divFavoritesList = document.querySelector(
+  '.favorites-list',
+) as HTMLDivElement;
+if (!$divFavoritesList) throw new Error('$divFavoritesList does not exist');
+const $ulNavBarNav = document.querySelector('.navbar-nav') as HTMLUListElement;
+if (!$ulNavBarNav) throw new Error('$ulNavBarNav does not exist');
+const $dataViews = document.querySelectorAll('.view');
+if (!$dataViews) throw new Error('$dataViews does not exist');
 
 let breedInfo: BreedInfo = {
   id: 0,
@@ -54,11 +67,43 @@ let breedInfo: BreedInfo = {
     metric: '',
   },
   life_span: '',
+  reference_image_id: '',
 };
 
 let breedImages: BreedImages[] = [];
 
-function populateBreedsList(breedsList: BreedID[]): void {
+async function fetchBreedsList(): Promise<void> {
+  // Clears any possible values assigned `breedList`
+  ppData.breedsList.length = 0;
+
+  try {
+    // Initiate a fetch request and await its response
+    const response = await fetch('https://api.thedogapi.com/v1/breeds/');
+
+    // Ensure the response status indicates success
+    if (!response.ok) {
+      // If the status code is not in the successful range, throw an error
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    // Await the parsing of the response body as JSON
+    const breeds = await response.json();
+    for (const breed of breeds) {
+      ppData.breedsList.push({
+        name: breed.name,
+        id: breed.id,
+      } as BreedID);
+    }
+    // Stores `breedList` for future use
+    writeData(ppData);
+  } catch (error) {
+    // Log any errors that arise during the fetch operation
+    console.error('Error:', error);
+  }
+}
+
+async function populateBreedsList(breedsList: BreedID[]): Promise<void> {
+  await fetchBreedsList();
   for (const breed of breedsList) {
     // Creates 'option' element for each breed
     const $optionBreed: HTMLOptionElement = document.createElement('option');
@@ -119,11 +164,22 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedInfo.innerHTML = '';
 
   // Adds a div element for breed name
-  const $divBreedName = document.createElement('div') as HTMLElement;
+  const $divBreedName = document.createElement('div') as HTMLDivElement;
   $divBreedName.className = 'flex breed-info-name';
   const $iBreedNameStar = document.createElement('i') as HTMLElement;
-  $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
-  const $divBreedNameTitle = document.createElement('div') as HTMLElement;
+  let favoriteBreed = false;
+  for (let i = 0; i < ppData.favoritesList.length; i++) {
+    if (ppData.favoritesList[i].id === breedInfo.id) {
+      favoriteBreed = true;
+    }
+  }
+  if (favoriteBreed === true) {
+    $iBreedNameStar.className = 'fa-solid fa-star breed-info-name-star';
+  } else {
+    $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
+  }
+  console.log('ppData:', ppData);
+  const $divBreedNameTitle = document.createElement('div') as HTMLDivElement;
   $divBreedNameTitle.className = 'flex breed-info-name-title-div';
   const $h2BreedNameTitle = document.createElement('h2') as HTMLElement;
   $h2BreedNameTitle.className = 'breed-info-name-title-h2';
@@ -372,8 +428,49 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedInfo.append($divBreedImages);
 }
 
-if (!ppData.breedsList) throw new Error('ppData.breedsList does not exist');
+async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
+  try {
+    const response = await fetch(
+      `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`,
+    );
+    if (!response.ok) {
+      throw new Error(`Image is unavailable. Status: ${response.status}`);
+    } else {
+      $imgFavoritesPageImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`;
+    }
+  } catch (error) {
+    $imgFavoritesPageImage.src = 'images/image-unavailable-icon.avif';
+    console.error('Error:', error);
+  }
+
+  // Clears the div of previous favorites list
+  if (!$divFavoritesList) throw new Error('divBreedInfo does not exist');
+  $divFavoritesList.innerHTML = '';
+
+  // Create a listing for a favorite breeds
+  for (let i = 0; i < favoritesList.length; i++) {
+    const $divFavBreedRow = document.createElement('div') as HTMLDivElement;
+    $divFavBreedRow.className = 'flex favorite-breed-row';
+    const $divFavBreedInfo = document.createElement('div') as HTMLDivElement;
+    $divFavBreedInfo.className = 'flex favorite-breed-info';
+    const $divFavBreedInfoName = document.createElement(
+      'div',
+    ) as HTMLDivElement;
+    $divFavBreedInfoName.className = 'favorite-breed-info-name';
+    $divFavBreedInfoName.textContent = `${favoritesList[i].name}`;
+    const $imgFavBreedImage = document.createElement('img') as HTMLImageElement;
+    $imgFavBreedImage.className = 'favorite-breed-info-image';
+    $imgFavBreedImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[i].reference_image_id}.jpg`;
+    $divFavBreedInfo.append($divFavBreedInfoName);
+    $divFavBreedInfo.append($imgFavBreedImage);
+    $divFavBreedRow.append($divFavBreedInfo);
+    $divFavoritesList.append($divFavBreedRow);
+  }
+}
+
 populateBreedsList(ppData.breedsList);
+populateFavorites(ppData.favoritesList);
+console.log(ppData);
 
 $selectBreedsList.addEventListener('change', async (event: Event) => {
   const eventTarget = event.target as HTMLOptionElement;
@@ -395,6 +492,42 @@ $selectBreedsList.addEventListener('change', async (event: Event) => {
     } catch (error) {
       $imgBreedsPageImage.src = 'images/image-unavailable-icon.avif';
       console.error('Error:', error);
+    }
+  }
+});
+
+$divBreedInfo.addEventListener('click', (event: Event) => {
+  // if (!ppData.favoritesList)
+  //   throw new Error('ppData.favoritesList does not exist');
+  const eventTarget = event.target as HTMLElement;
+  if (eventTarget.classList.contains('fa-star')) {
+    if (eventTarget.classList.contains('fa-regular')) {
+      eventTarget.className = 'fa-solid fa-star breed-info-name-star';
+      ppData.favoritesList.push({
+        name: breedInfo.name,
+        id: breedInfo.id,
+        reference_image_id: breedInfo.reference_image_id,
+      } as BreedIDImage);
+    } else {
+      eventTarget.className = 'fa-regular fa-star breed-info-name-star';
+      for (let i = 0; i < ppData.favoritesList.length; i++) {
+        if (breedInfo.id === ppData.favoritesList[i].id) {
+          ppData.favoritesList.splice(i, 1);
+        }
+      }
+    }
+  }
+  writeData(ppData);
+});
+
+$ulNavBarNav.addEventListener('click', (event: Event) => {
+  const eventTarget = event.target as HTMLElement;
+  for (const view of $dataViews) {
+    const $viewHTMLElement = view as HTMLElement;
+    if ($viewHTMLElement.dataset.view === eventTarget.id) {
+      $viewHTMLElement.className = 'view';
+    } else {
+      $viewHTMLElement.className = 'view hidden';
     }
   }
 });

@@ -15,9 +15,9 @@ nav {
 }
 
 #logo,
-#home-tab,
-#breeds-tab,
-#favorites-tab,
+#home,
+#breeds,
+#favorites,
 .page-title-container > h1,
 .breed-info-name {
   font-family: Righteous, serif;
@@ -27,9 +27,10 @@ nav {
 }
 
 #logo,
-#home-tab,
-#breeds-tab,
-#favorites-tab {
+#home,
+#breeds,
+#favorites,
+.favorite-breed-info-name {
   color: #00a7d9;
 }
 
@@ -61,9 +62,9 @@ nav {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='rgba(0, 167, 217, 1)' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
-#home-tab,
-#breeds-tab,
-#favorites-tab {
+#home,
+#breeds,
+#favorites {
   font-size: 22px;
   text-align: center;
   padding: 8px 20px;
@@ -72,21 +73,21 @@ nav {
   margin: 4px;
 }
 
-#home-tab:active,
-#breeds-tab:active,
-#favorites-tab:active,
-#home-tab:focus,
-#breeds-tab:focus,
-#favorites-tab:focus,
-#home-tab:hover,
-#breeds-tab:hover,
-#favorites-tab:hover {
+#home:active,
+#breeds:active,
+#favorites:active,
+#home:focus,
+#breeds:focus,
+#favorites:focus,
+#home:hover,
+#breeds:hover,
+#favorites:hover {
   color: white !important;
   background-color: #00a7d9 !important;
   border: 2px solid white !important;
 }
 
-.hide-view {
+.hidden {
   display: none !important;
 }
 
@@ -103,7 +104,8 @@ nav {
 }
 
 .home-page-image,
-.breeds-page-image {
+.breeds-page-image,
+.favorites-page-image {
   max-width: 90%;
   max-height: 293px;
   box-sizing: border-box;
@@ -120,14 +122,18 @@ nav {
   font-size: 30px;
 }
 
-.page-body-container {
-  color: white;
+.page-body-container,
+.favorite-breed-info-name {
   font-family: Roboto, sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;
   font-style: normal;
   font-variation-settings: 'wdth' 100;
   font-size: 20px;
+}
+
+.page-body-container {
+  font-weight: 400;
+  color: white;
   width: 90%;
 }
 
@@ -197,11 +203,35 @@ nav {
   width: 50%;
 }
 
+.favorite-breed-row {
+  background-color: white;
+  width: 100%;
+  align-items: center;
+}
+
+.favorite-breed-info {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.favorite-breed-info-name {
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.favorite-breed-info-image {
+  box-sizing: border-box;
+  height: 100px;
+  padding: 8px;
+  border-radius: 15px;
+}
+
 /* Desktop View */
 @media screen and (width >= 720px) {
-  #home-tab,
-  #breeds-tab,
-  #favorites-tab {
+  #home,
+  #breeds,
+  #favorites {
     font-size: 24px;
     padding: 4px 20px;
   }
