@@ -1,48 +1,10 @@
-interface Weight {
-  imperial: string;
-  metric: string;
-}
-
-interface Height {
-  imperial: string;
-  metric: string;
-}
-
-interface BreedInfo {
-  id: number;
-  name: string;
-  weight: Weight;
-  height: Height;
-  life_span: string;
-  reference_image_id?: string;
-  temperament?: string;
-  breed_group?: string;
-  bred_for?: string;
-  country_code?: string;
-  origin?: string;
-  history?: string;
-  description?: string;
-}
-
-interface BreedImages {
-  id: string;
-  url: string;
-  width: number;
-  height: number;
-}
-
-const $selectBreedsList = document.querySelector(
-  '.breeds-list',
-) as HTMLSelectElement;
+'use strict';
+const $selectBreedsList = document.querySelector('.breeds-list');
 if (!$selectBreedsList) throw new Error('$selectBreedsList does not exist');
-const $imgBreedsPageImage = document.querySelector(
-  '.breeds-page-image',
-) as HTMLImageElement;
+const $imgBreedsPageImage = document.querySelector('.breeds-page-image');
 if (!$imgBreedsPageImage) throw new Error('$imgBreedsPageImage does not exist');
-
-const $divBreedInfo = document.querySelector('.breed-info') as HTMLDivElement;
-
-let breedInfo: BreedInfo = {
+const $divBreedInfo = document.querySelector('.breed-info');
+let breedInfo = {
   id: 0,
   name: '',
   weight: {
@@ -55,51 +17,44 @@ let breedInfo: BreedInfo = {
   },
   life_span: '',
 };
-
-let breedImages: BreedImages[] = [];
-
-function populateBreedsList(breedsList: BreedID[]): void {
+let breedImages = [];
+function populateBreedsList(breedsList) {
   for (const breed of breedsList) {
     // Creates 'option' element for each breed
-    const $optionBreed: HTMLOptionElement = document.createElement('option');
+    const $optionBreed = document.createElement('option');
     if (!$optionBreed) throw new Error('$optionBreed does not exist');
     $optionBreed.className = 'breeds-list-breed';
     $optionBreed.value = breed.id.toString();
     $optionBreed.textContent = breed.name;
-
     // Appends the `option` element to the drop-down list
     $selectBreedsList.append($optionBreed);
   }
 }
-
-async function fetchBreedInfo(breedID: number): Promise<void> {
+async function fetchBreedInfo(breedID) {
   try {
     // Initiate a fetch request and await its response
     const response = await fetch(
       `https://api.thedogapi.com/v1/breeds/${breedID}`,
     );
-
     // Ensure the response status indicates success
     if (!response.ok) {
       // If the status code is not in the successful range, throw an error
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     // Await the parsing of the response body as JSON
-    breedInfo = (await response.json()) as BreedInfo;
+    breedInfo = await response.json();
   } catch (error) {
     // Log any errors that arise during the fetch operation
     console.error('Error:', error);
   }
 }
-
 // Obtains random images of the breed
-async function fetchBreedImages(breedID: number): Promise<void> {
+async function fetchBreedImages(breedID) {
   try {
     // Initiate a fetch request and await its response
     const response = await fetch(
       `https://api.thedogapi.com/v1/images/search?breed_ids=${breedID}&include_breeds=true&limit=25`,
     );
-
     // Ensure the response status indicates success
     if (!response.ok) {
       // If the status code is not in the successful range, throw an error
@@ -112,42 +67,37 @@ async function fetchBreedImages(breedID: number): Promise<void> {
     console.error('Error:', error);
   }
 }
-
-async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
+async function populateBreedInfo(breedInfo) {
   // Clears the div of any previous breed queries
   if (!$divBreedInfo) throw new Error('divBreedInfo does not exist');
   $divBreedInfo.innerHTML = '';
-
   // Adds a div element for breed name
-  const $divBreedName = document.createElement('div') as HTMLElement;
+  const $divBreedName = document.createElement('div');
   $divBreedName.className = 'flex breed-info-name';
-  const $iBreedNameStar = document.createElement('i') as HTMLElement;
+  const $iBreedNameStar = document.createElement('i');
   $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
-  const $divBreedNameTitle = document.createElement('div') as HTMLElement;
+  const $divBreedNameTitle = document.createElement('div');
   $divBreedNameTitle.className = 'flex breed-info-name-title-div';
-  const $h2BreedNameTitle = document.createElement('h2') as HTMLElement;
+  const $h2BreedNameTitle = document.createElement('h2');
   $h2BreedNameTitle.className = 'breed-info-name-title-h2';
   $h2BreedNameTitle.textContent = `${breedInfo.name}`;
   $divBreedName.append($iBreedNameStar);
   $divBreedNameTitle.append($h2BreedNameTitle);
   $divBreedName.append($divBreedNameTitle);
   $divBreedInfo.append($divBreedName);
-
   // Adds a div element for breed weight
-  const $divBreedWeight = document.createElement('div') as HTMLDivElement;
+  const $divBreedWeight = document.createElement('div');
   $divBreedWeight.className = 'breed-info-details breed-info-weight';
-  const $divBreedWeightLabel = document.createElement('div') as HTMLDivElement;
+  const $divBreedWeightLabel = document.createElement('div');
   $divBreedWeightLabel.className = 'breed-info-weight-label breed-info-label';
   $divBreedWeightLabel.textContent = 'Weight: ';
-  const $divBreedWeightValue = document.createElement('div') as HTMLDivElement;
+  const $divBreedWeightValue = document.createElement('div');
   $divBreedWeightValue.className = 'breed-info-weight-value';
-  const $divBreedWeightImperial = document.createElement(
-    'div',
-  ) as HTMLDivElement;
+  const $divBreedWeightImperial = document.createElement('div');
   $divBreedWeightImperial.className = 'breed-info-weight-imperial';
   if (!breedInfo.weight) throw new Error('breedInfo.weight does not exist');
   $divBreedWeightImperial.textContent = `• Imperial: ${breedInfo.weight.imperial}`;
-  const $divBreedWeightMetric = document.createElement('div') as HTMLDivElement;
+  const $divBreedWeightMetric = document.createElement('div');
   $divBreedWeightMetric.className = 'breed-info-weight-metric';
   $divBreedWeightMetric.textContent = `• Metric: ${breedInfo.weight.metric}`;
   $divBreedWeightValue.append($divBreedWeightImperial);
@@ -155,22 +105,19 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedWeight.append($divBreedWeightLabel);
   $divBreedWeight.append($divBreedWeightValue);
   $divBreedInfo.append($divBreedWeight);
-
   // Adds a div element for breed height
-  const $divBreedHeight = document.createElement('div') as HTMLDivElement;
+  const $divBreedHeight = document.createElement('div');
   $divBreedHeight.className = 'breed-info-details breed-info-height';
-  const $divBreedHeightLabel = document.createElement('div') as HTMLDivElement;
+  const $divBreedHeightLabel = document.createElement('div');
   $divBreedHeightLabel.className = 'breed-info-height-label breed-info-label';
   $divBreedHeightLabel.textContent = 'Height: ';
-  const $divBreedHeightValue = document.createElement('div') as HTMLDivElement;
+  const $divBreedHeightValue = document.createElement('div');
   $divBreedHeightValue.className = 'breed-info-height-value';
-  const $divBreedHeightImperial = document.createElement(
-    'div',
-  ) as HTMLDivElement;
+  const $divBreedHeightImperial = document.createElement('div');
   $divBreedHeightImperial.className = 'breed-info-height-imperial';
   if (!breedInfo.height) throw new Error('$breedInfo.height does not exist');
   $divBreedHeightImperial.textContent = `• Imperial: ${breedInfo.height.imperial}`;
-  const $divBreedHeightMetric = document.createElement('div') as HTMLDivElement;
+  const $divBreedHeightMetric = document.createElement('div');
   $divBreedHeightMetric.className = 'breed-info-height-metric';
   $divBreedHeightMetric.textContent = `• Metric: ${breedInfo.height.metric}`;
   $divBreedHeightValue.append($divBreedHeightImperial);
@@ -178,37 +125,27 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedHeight.append($divBreedHeightLabel);
   $divBreedHeight.append($divBreedHeightValue);
   $divBreedInfo.append($divBreedHeight);
-
   // Adds a div element for breed life span
-  const $divBreedLifeSpan = document.createElement('div') as HTMLDivElement;
+  const $divBreedLifeSpan = document.createElement('div');
   $divBreedLifeSpan.className = 'breed-info-details breed-info-life-span';
-  const $divBreedLifeSpanLabel = document.createElement(
-    'div',
-  ) as HTMLDivElement;
+  const $divBreedLifeSpanLabel = document.createElement('div');
   $divBreedLifeSpanLabel.className =
     'breed-info-life-span-label breed-info-label';
   $divBreedLifeSpanLabel.textContent = 'Life Span: ';
-  const $divBreedLifeSpanValue = document.createElement(
-    'div',
-  ) as HTMLDivElement;
+  const $divBreedLifeSpanValue = document.createElement('div');
   $divBreedLifeSpanValue.className = 'breed-info-life-span-value';
   $divBreedLifeSpanValue.textContent = `${breedInfo.life_span}`;
   $divBreedLifeSpan.append($divBreedLifeSpanLabel);
   $divBreedLifeSpan.append($divBreedLifeSpanValue);
   $divBreedInfo.append($divBreedLifeSpan);
-
   // Adds a div element for breed temperament
-  const $divBreedTemperament = document.createElement('div') as HTMLDivElement;
+  const $divBreedTemperament = document.createElement('div');
   $divBreedTemperament.className = 'breed-info-details breed-info-temperament';
-  const $divBreedTemperamentLabel = document.createElement(
-    'div',
-  ) as HTMLDivElement;
+  const $divBreedTemperamentLabel = document.createElement('div');
   $divBreedTemperamentLabel.className =
     'breed-info-temperament-label breed-info-label';
   $divBreedTemperamentLabel.textContent = 'Temperament: ';
-  const $divBreedTemperamentValue = document.createElement(
-    'div',
-  ) as HTMLDivElement;
+  const $divBreedTemperamentValue = document.createElement('div');
   $divBreedTemperamentValue.className = 'breed-info-temperament-value';
   if (!breedInfo.temperament) {
     $divBreedTemperamentValue.textContent = 'N/A';
@@ -218,15 +155,14 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedTemperament.append($divBreedTemperamentLabel);
   $divBreedTemperament.append($divBreedTemperamentValue);
   $divBreedInfo.append($divBreedTemperament);
-
   // Adds a div element for breed group
-  const $divBreedGroup = document.createElement('div') as HTMLDivElement;
+  const $divBreedGroup = document.createElement('div');
   $divBreedGroup.className = 'breed-info-details breed-info-breed-group';
-  const $divBreedGroupLabel = document.createElement('div') as HTMLDivElement;
+  const $divBreedGroupLabel = document.createElement('div');
   $divBreedGroupLabel.className =
     'breed-info-breed-group-label breed-info-label';
   $divBreedGroupLabel.textContent = 'Breed Group: ';
-  const $divBreedGroupValue = document.createElement('div') as HTMLDivElement;
+  const $divBreedGroupValue = document.createElement('div');
   $divBreedGroupValue.className = 'breed-info-breed-group-value';
   if (!breedInfo.breed_group) {
     $divBreedGroupValue.textContent = 'N/A';
@@ -236,15 +172,14 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedGroup.append($divBreedGroupLabel);
   $divBreedGroup.append($divBreedGroupValue);
   $divBreedInfo.append($divBreedGroup);
-
   // Adds a div element for breed bred for
-  const $divBreedBredFor = document.createElement('div') as HTMLDivElement;
+  const $divBreedBredFor = document.createElement('div');
   $divBreedBredFor.className = 'breed-info-details breed-info-breed-bred-for';
-  const $divBreedBredForLabel = document.createElement('div') as HTMLDivElement;
+  const $divBreedBredForLabel = document.createElement('div');
   $divBreedBredForLabel.className =
     'breed-info-breed-bred-for-label breed-info-label';
   $divBreedBredForLabel.textContent = 'Bred For: ';
-  const $divBreedBredForValue = document.createElement('div') as HTMLDivElement;
+  const $divBreedBredForValue = document.createElement('div');
   $divBreedBredForValue.className = 'breed-info-breed-bred-for-value';
   if (!breedInfo.bred_for) {
     $divBreedBredForValue.textContent = 'N/A';
@@ -254,20 +189,15 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedBredFor.append($divBreedBredForLabel);
   $divBreedBredFor.append($divBreedBredForValue);
   $divBreedInfo.append($divBreedBredFor);
-
   // Adds a div element for breed country code
-  const $divBreedCountyCode = document.createElement('div') as HTMLDivElement;
+  const $divBreedCountyCode = document.createElement('div');
   $divBreedCountyCode.className =
     'breed-info-details breed-info-breed-country-code';
-  const $divBreedCountyCodeLabel = document.createElement(
-    'div',
-  ) as HTMLDivElement;
+  const $divBreedCountyCodeLabel = document.createElement('div');
   $divBreedCountyCodeLabel.className =
     'breed-info-breed-country-code-label breed-info-label';
   $divBreedCountyCodeLabel.textContent = 'Country Code: ';
-  const $divBreedCountyCodeValue = document.createElement(
-    'div',
-  ) as HTMLDivElement;
+  const $divBreedCountyCodeValue = document.createElement('div');
   $divBreedCountyCodeValue.className = 'breed-info-breed-country-code-value';
   if (!breedInfo.country_code) {
     $divBreedCountyCodeValue.textContent = 'N/A';
@@ -277,15 +207,14 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedCountyCode.append($divBreedCountyCodeLabel);
   $divBreedCountyCode.append($divBreedCountyCodeValue);
   $divBreedInfo.append($divBreedCountyCode);
-
   // Adds a div element for breed origin
-  const $divBreedOrigin = document.createElement('div') as HTMLDivElement;
+  const $divBreedOrigin = document.createElement('div');
   $divBreedOrigin.className = 'breed-info-details breed-info-breed-origin';
-  const $divBreedOriginLabel = document.createElement('div') as HTMLDivElement;
+  const $divBreedOriginLabel = document.createElement('div');
   $divBreedOriginLabel.className =
     'breed-info-breed-origin-label breed-info-label';
   $divBreedOriginLabel.textContent = 'Origin: ';
-  const $divBreedOriginValue = document.createElement('div') as HTMLDivElement;
+  const $divBreedOriginValue = document.createElement('div');
   $divBreedOriginValue.className = 'breed-info-breed-origin-value';
   if (!breedInfo.origin) {
     $divBreedOriginValue.textContent = 'N/A';
@@ -295,15 +224,14 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedOrigin.append($divBreedOriginLabel);
   $divBreedOrigin.append($divBreedOriginValue);
   $divBreedInfo.append($divBreedOrigin);
-
   // Adds a div element for breed history
-  const $divBreedHistory = document.createElement('div') as HTMLDivElement;
+  const $divBreedHistory = document.createElement('div');
   $divBreedHistory.className = 'breed-info-details breed-info-breed-history';
-  const $divBreedHistoryLabel = document.createElement('div') as HTMLDivElement;
+  const $divBreedHistoryLabel = document.createElement('div');
   $divBreedHistoryLabel.className =
     'breed-info-breed-history-label breed-info-label';
   $divBreedHistoryLabel.textContent = 'History: ';
-  const $divBreedHistoryValue = document.createElement('div') as HTMLDivElement;
+  const $divBreedHistoryValue = document.createElement('div');
   $divBreedHistoryValue.className = 'breed-info-breed-history-value';
   if (!breedInfo.history) {
     $divBreedHistoryValue.textContent = 'N/A';
@@ -313,20 +241,15 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedHistory.append($divBreedHistoryLabel);
   $divBreedHistory.append($divBreedHistoryValue);
   $divBreedInfo.append($divBreedHistory);
-
   // Adds a div element for breed description
-  const $divBreedDescription = document.createElement('div') as HTMLDivElement;
+  const $divBreedDescription = document.createElement('div');
   $divBreedDescription.className =
     'breed-info-details breed-info-breed-description';
-  const $divBreedDescriptionLabel = document.createElement(
-    'div',
-  ) as HTMLDivElement;
+  const $divBreedDescriptionLabel = document.createElement('div');
   $divBreedDescriptionLabel.className =
     'breed-info-breed-description-label breed-info-label';
   $divBreedDescriptionLabel.textContent = 'Description: ';
-  const $divBreedDescriptionValue = document.createElement(
-    'div',
-  ) as HTMLDivElement;
+  const $divBreedDescriptionValue = document.createElement('div');
   $divBreedDescriptionValue.className = 'breed-info-breed-description-value';
   if (!breedInfo.description) {
     $divBreedDescriptionValue.textContent = 'N/A';
@@ -336,17 +259,15 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedDescription.append($divBreedDescriptionLabel);
   $divBreedDescription.append($divBreedDescriptionValue);
   $divBreedInfo.append($divBreedDescription);
-
   // Adds a div element for breed images
-  const $divBreedImages = document.createElement('div') as HTMLDivElement;
+  const $divBreedImages = document.createElement('div');
   $divBreedImages.className = 'breed-info-breed-images';
-  const $divBreedImagesLabel = document.createElement('div') as HTMLDivElement;
+  const $divBreedImagesLabel = document.createElement('div');
   $divBreedImagesLabel.className =
     'breed-info-breed-images-label breed-info-label';
   $divBreedImagesLabel.textContent = 'Additional Images: ';
-  const $divBreedImagesValue = document.createElement('div') as HTMLDivElement;
+  const $divBreedImagesValue = document.createElement('div');
   $divBreedImagesValue.className = 'breed-info-breed-images-value';
-
   // Adds random images of the breed
   if (!breedInfo) throw new Error('breedInfo does not exist');
   await fetchBreedImages(breedInfo.id);
@@ -371,12 +292,10 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedImages.append($divBreedImagesValue);
   $divBreedInfo.append($divBreedImages);
 }
-
 if (!ppData.breedsList) throw new Error('ppData.breedsList does not exist');
 populateBreedsList(ppData.breedsList);
-
-$selectBreedsList.addEventListener('change', async (event: Event) => {
-  const eventTarget = event.target as HTMLOptionElement;
+$selectBreedsList.addEventListener('change', async (event) => {
+  const eventTarget = event.target;
   if (!eventTarget.value) {
     $imgBreedsPageImage.src = 'images/breeds-page-image.jpg';
     $divBreedInfo.innerHTML = '';

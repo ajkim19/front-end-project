@@ -1,60 +1,39 @@
-// Creates the data type that will be used for data
-interface BreedID {
-  name: string;
-  id: number;
-}
-
-interface BreedIDImage {
-  name: string;
-  id: number;
-  reference_image_id: string;
-}
-
-interface PPData {
-  breedsList?: BreedID[];
-  favoritesList?: BreedIDImage[];
-}
-let ppData: PPData = {};
+'use strict';
+let ppData = {};
 ppData = readData();
-let breedsList: any[] = [];
-
+let breedsList = [];
 // Saves data to local storage for persistent data
-function writeData(ppData: PPData): void {
+function writeData(ppData) {
   const ppDataJSON = JSON.stringify(ppData);
   localStorage.setItem('picking-pals-storage', ppDataJSON);
 }
-
 // Retrieves the data from local storage for the application
-function readData(): PPData {
+function readData() {
   const ppDataJSON = localStorage.getItem('picking-pals-storage');
   if (!ppDataJSON) {
     return ppData;
   }
-  const ppDataParsed = JSON.parse(ppDataJSON) as PPData;
+  const ppDataParsed = JSON.parse(ppDataJSON);
   return ppDataParsed;
 }
-
-async function fetchBreedsList(): Promise<void> {
+async function fetchBreedsList() {
   // Clears any possible values assigned `breedList`
   breedsList = [];
-
   try {
     // Initiate a fetch request and await its response
     const response = await fetch('https://api.thedogapi.com/v1/breeds/');
-
     // Ensure the response status indicates success
     if (!response.ok) {
       // If the status code is not in the successful range, throw an error
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
     // Await the parsing of the response body as JSON
     const breeds = await response.json();
     for (const breed of breeds) {
       breedsList.push({
         name: breed.name,
         id: breed.id,
-      } as BreedID);
+      });
     }
     // Stores `breedList` for future use
     ppData.breedsList = breedsList;
@@ -64,5 +43,4 @@ async function fetchBreedsList(): Promise<void> {
     console.error('Error:', error);
   }
 }
-
 fetchBreedsList();
