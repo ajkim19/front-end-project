@@ -124,7 +124,6 @@ async function populateBreedInfo(breedInfo) {
   } else {
     $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
   }
-  console.log('ppData:', ppData);
   const $divBreedNameTitle = document.createElement('div');
   $divBreedNameTitle.className = 'flex breed-info-name-title-div';
   const $h2BreedNameTitle = document.createElement('h2');
@@ -378,7 +377,6 @@ async function populateFavorites(favoritesList) {
 }
 populateBreedsList(ppData.breedsList);
 populateFavorites(ppData.favoritesList);
-console.log(ppData);
 $selectBreedsList.addEventListener('change', async (event) => {
   const eventTarget = event.target;
   if (!eventTarget.value) {

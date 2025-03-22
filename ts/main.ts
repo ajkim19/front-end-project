@@ -178,7 +178,6 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   } else {
     $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
   }
-  console.log('ppData:', ppData);
   const $divBreedNameTitle = document.createElement('div') as HTMLDivElement;
   $divBreedNameTitle.className = 'flex breed-info-name-title-div';
   const $h2BreedNameTitle = document.createElement('h2') as HTMLElement;
@@ -470,7 +469,6 @@ async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
 
 populateBreedsList(ppData.breedsList);
 populateFavorites(ppData.favoritesList);
-console.log(ppData);
 
 $selectBreedsList.addEventListener('change', async (event: Event) => {
   const eventTarget = event.target as HTMLOptionElement;
