@@ -438,3 +438,26 @@ $ulNavBarNav.addEventListener('click', (event) => {
     }
   }
 });
+$ulNavBarNav.addEventListener('click', (event) => {
+  const eventTarget = event.target;
+  for (const view of $dataViews) {
+    const $viewHTMLElement = view;
+    if ($viewHTMLElement.dataset.view === eventTarget.id) {
+      $viewHTMLElement.className = 'view';
+    } else {
+      $viewHTMLElement.className = 'view hidden';
+    }
+  }
+});
+$divFavoritesList.addEventListener('change', (event) => {
+  const eventTarget = event.target;
+  console.log(eventTarget);
+  // for (const view of $dataViews) {
+  //   const $viewHTMLElement = view as HTMLElement;
+  //   if ($viewHTMLElement.dataset.view === eventTarget.id) {
+  //     $viewHTMLElement.className = 'view';
+  //   } else {
+  //     $viewHTMLElement.className = 'view hidden';
+  //   }
+  // }
+});
