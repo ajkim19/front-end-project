@@ -475,6 +475,16 @@ async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
   }
 }
 
+// Application initialization
+for (const view of $dataViews) {
+  const $viewHTMLElement = view as HTMLElement;
+  if ($viewHTMLElement.dataset.view === ppData.view) {
+    $viewHTMLElement.className = 'view';
+  } else {
+    $viewHTMLElement.className = 'view hidden';
+  }
+}
+
 populateBreedsList(ppData.breedsList);
 populateFavorites(ppData.favoritesList);
 
@@ -503,8 +513,6 @@ $selectBreedsList.addEventListener('change', async (event: Event) => {
 });
 
 $divBreedInfo.addEventListener('click', (event: Event) => {
-  // if (!ppData.favoritesList)
-  //   throw new Error('ppData.favoritesList does not exist');
   const eventTarget = event.target as HTMLElement;
   if (eventTarget.classList.contains('fa-star')) {
     if (eventTarget.classList.contains('fa-regular')) {
@@ -524,34 +532,25 @@ $divBreedInfo.addEventListener('click', (event: Event) => {
     }
   }
   writeData(ppData);
+  populateFavorites(ppData.favoritesList);
 });
 
+// Toggles between different page views
 $ulNavBarNav.addEventListener('click', (event: Event) => {
   const eventTarget = event.target as HTMLElement;
   for (const view of $dataViews) {
     const $viewHTMLElement = view as HTMLElement;
     if ($viewHTMLElement.dataset.view === eventTarget.id) {
       $viewHTMLElement.className = 'view';
+      ppData.view = $viewHTMLElement.dataset.view;
     } else {
       $viewHTMLElement.className = 'view hidden';
     }
   }
+  writeData(ppData);
 });
 
-$ulNavBarNav.addEventListener('click', (event: Event) => {
-  const eventTarget = event.target as HTMLElement;
-  for (const view of $dataViews) {
-    const $viewHTMLElement = view as HTMLElement;
-    if ($viewHTMLElement.dataset.view === eventTarget.id) {
-      $viewHTMLElement.className = 'view';
-    } else {
-      $viewHTMLElement.className = 'view hidden';
-    }
-  }
-});
-
-console.log('ppData.favoritesList', ppData.favoritesList);
-
+// Updates favorites list with new rankings
 $divFavoritesList.addEventListener('change', (event: Event) => {
   const eventTarget = event.target as HTMLInputElement;
   const breedRank = eventTarget.closest('.favorite-breed-row');
