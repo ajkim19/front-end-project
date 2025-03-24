@@ -568,3 +568,9 @@ $divFavoritesList.addEventListener('change', (event: Event) => {
   writeData(ppData);
   populateFavorites(ppData.favoritesList);
 });
+
+// Updates favorites list without the deleted favorite
+$divFavoritesList.addEventListener('change', () => {
+  writeData(ppData);
+  populateFavorites(ppData.favoritesList);
+});
