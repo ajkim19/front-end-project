@@ -124,7 +124,6 @@ async function populateBreedInfo(breedInfo) {
   } else {
     $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
   }
-  console.log('ppData:', ppData);
   const $divBreedNameTitle = document.createElement('div');
   $divBreedNameTitle.className = 'flex breed-info-name-title-div';
   const $h2BreedNameTitle = document.createElement('h2');
@@ -362,6 +361,13 @@ async function populateFavorites(favoritesList) {
   for (let i = 0; i < favoritesList.length; i++) {
     const $divFavBreedRow = document.createElement('div');
     $divFavBreedRow.className = 'flex favorite-breed-row';
+    $divFavBreedRow.setAttribute('rank', (i + 1).toString());
+    const $inputRank = document.createElement('input');
+    $inputRank.className = 'favorite-breed-rank';
+    $inputRank.type = 'number';
+    $inputRank.min = '1';
+    $inputRank.max = favoritesList.length.toString();
+    $inputRank.value = (i + 1).toString();
     const $divFavBreedInfo = document.createElement('div');
     $divFavBreedInfo.className = 'flex favorite-breed-info';
     const $divFavBreedInfoName = document.createElement('div');
@@ -370,15 +376,24 @@ async function populateFavorites(favoritesList) {
     const $imgFavBreedImage = document.createElement('img');
     $imgFavBreedImage.className = 'favorite-breed-info-image';
     $imgFavBreedImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[i].reference_image_id}.jpg`;
+    $divFavBreedRow.append($inputRank);
     $divFavBreedInfo.append($divFavBreedInfoName);
     $divFavBreedInfo.append($imgFavBreedImage);
     $divFavBreedRow.append($divFavBreedInfo);
     $divFavoritesList.append($divFavBreedRow);
   }
 }
+// Application initialization
+for (const view of $dataViews) {
+  const $viewHTMLElement = view;
+  if ($viewHTMLElement.dataset.view === ppData.view) {
+    $viewHTMLElement.className = 'view';
+  } else {
+    $viewHTMLElement.className = 'view hidden';
+  }
+}
 populateBreedsList(ppData.breedsList);
 populateFavorites(ppData.favoritesList);
-console.log(ppData);
 $selectBreedsList.addEventListener('change', async (event) => {
   const eventTarget = event.target;
   if (!eventTarget.value) {
@@ -403,8 +418,6 @@ $selectBreedsList.addEventListener('change', async (event) => {
   }
 });
 $divBreedInfo.addEventListener('click', (event) => {
-  // if (!ppData.favoritesList)
-  //   throw new Error('ppData.favoritesList does not exist');
   const eventTarget = event.target;
   if (eventTarget.classList.contains('fa-star')) {
     if (eventTarget.classList.contains('fa-regular')) {
@@ -424,15 +437,30 @@ $divBreedInfo.addEventListener('click', (event) => {
     }
   }
   writeData(ppData);
+  populateFavorites(ppData.favoritesList);
 });
+// Toggles between different page views
 $ulNavBarNav.addEventListener('click', (event) => {
   const eventTarget = event.target;
   for (const view of $dataViews) {
     const $viewHTMLElement = view;
     if ($viewHTMLElement.dataset.view === eventTarget.id) {
       $viewHTMLElement.className = 'view';
+      ppData.view = $viewHTMLElement.dataset.view;
     } else {
       $viewHTMLElement.className = 'view hidden';
     }
   }
+  writeData(ppData);
+});
+// Updates favorites list with new rankings
+$divFavoritesList.addEventListener('change', (event) => {
+  const eventTarget = event.target;
+  const breedRank = eventTarget.closest('.favorite-breed-row');
+  const oldRank = breedRank?.getAttribute('rank');
+  const newRank = eventTarget.value;
+  const favBreed = ppData.favoritesList.splice(Number(oldRank) - 1, 1)[0];
+  ppData.favoritesList.splice(Number(newRank) - 1, 0, favBreed);
+  writeData(ppData);
+  populateFavorites(ppData.favoritesList);
 });

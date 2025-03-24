@@ -178,7 +178,6 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   } else {
     $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
   }
-  console.log('ppData:', ppData);
   const $divBreedNameTitle = document.createElement('div') as HTMLDivElement;
   $divBreedNameTitle.className = 'flex breed-info-name-title-div';
   const $h2BreedNameTitle = document.createElement('h2') as HTMLElement;
@@ -451,6 +450,13 @@ async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
   for (let i = 0; i < favoritesList.length; i++) {
     const $divFavBreedRow = document.createElement('div') as HTMLDivElement;
     $divFavBreedRow.className = 'flex favorite-breed-row';
+    $divFavBreedRow.setAttribute('rank', (i + 1).toString());
+    const $inputRank = document.createElement('input') as HTMLInputElement;
+    $inputRank.className = 'favorite-breed-rank';
+    $inputRank.type = 'number';
+    $inputRank.min = '1';
+    $inputRank.max = favoritesList.length.toString();
+    $inputRank.value = (i + 1).toString();
     const $divFavBreedInfo = document.createElement('div') as HTMLDivElement;
     $divFavBreedInfo.className = 'flex favorite-breed-info';
     const $divFavBreedInfoName = document.createElement(
@@ -461,6 +467,7 @@ async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
     const $imgFavBreedImage = document.createElement('img') as HTMLImageElement;
     $imgFavBreedImage.className = 'favorite-breed-info-image';
     $imgFavBreedImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[i].reference_image_id}.jpg`;
+    $divFavBreedRow.append($inputRank);
     $divFavBreedInfo.append($divFavBreedInfoName);
     $divFavBreedInfo.append($imgFavBreedImage);
     $divFavBreedRow.append($divFavBreedInfo);
@@ -468,9 +475,18 @@ async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
   }
 }
 
+// Application initialization
+for (const view of $dataViews) {
+  const $viewHTMLElement = view as HTMLElement;
+  if ($viewHTMLElement.dataset.view === ppData.view) {
+    $viewHTMLElement.className = 'view';
+  } else {
+    $viewHTMLElement.className = 'view hidden';
+  }
+}
+
 populateBreedsList(ppData.breedsList);
 populateFavorites(ppData.favoritesList);
-console.log(ppData);
 
 $selectBreedsList.addEventListener('change', async (event: Event) => {
   const eventTarget = event.target as HTMLOptionElement;
@@ -497,8 +513,6 @@ $selectBreedsList.addEventListener('change', async (event: Event) => {
 });
 
 $divBreedInfo.addEventListener('click', (event: Event) => {
-  // if (!ppData.favoritesList)
-  //   throw new Error('ppData.favoritesList does not exist');
   const eventTarget = event.target as HTMLElement;
   if (eventTarget.classList.contains('fa-star')) {
     if (eventTarget.classList.contains('fa-regular')) {
@@ -518,16 +532,32 @@ $divBreedInfo.addEventListener('click', (event: Event) => {
     }
   }
   writeData(ppData);
+  populateFavorites(ppData.favoritesList);
 });
 
+// Toggles between different page views
 $ulNavBarNav.addEventListener('click', (event: Event) => {
   const eventTarget = event.target as HTMLElement;
   for (const view of $dataViews) {
     const $viewHTMLElement = view as HTMLElement;
     if ($viewHTMLElement.dataset.view === eventTarget.id) {
       $viewHTMLElement.className = 'view';
+      ppData.view = $viewHTMLElement.dataset.view;
     } else {
       $viewHTMLElement.className = 'view hidden';
     }
   }
+  writeData(ppData);
+});
+
+// Updates favorites list with new rankings
+$divFavoritesList.addEventListener('change', (event: Event) => {
+  const eventTarget = event.target as HTMLInputElement;
+  const breedRank = eventTarget.closest('.favorite-breed-row');
+  const oldRank = breedRank?.getAttribute('rank');
+  const newRank = eventTarget.value;
+  const favBreed = ppData.favoritesList.splice(Number(oldRank) - 1, 1)[0];
+  ppData.favoritesList.splice(Number(newRank) - 1, 0, favBreed);
+  writeData(ppData);
+  populateFavorites(ppData.favoritesList);
 });

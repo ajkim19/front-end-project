@@ -29,8 +29,7 @@ nav {
 #logo,
 #home,
 #breeds,
-#favorites,
-.favorite-breed-info-name {
+#favorites {
   color: #00a7d9;
 }
 
@@ -203,10 +202,20 @@ nav {
   width: 50%;
 }
 
+.favorites-list {
+  flex-direction: column;
+}
+
 .favorite-breed-row {
   background-color: white;
   width: 100%;
   align-items: center;
+}
+
+.favorite-breed-rank {
+  width: 35px;
+  text-align: center;
+  margin: 10px;
 }
 
 .favorite-breed-info {
@@ -216,8 +225,9 @@ nav {
 }
 
 .favorite-breed-info-name {
+  color: rgb(100, 100, 100);
   font-weight: 600;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .favorite-breed-info-image {

@@ -13,10 +13,12 @@ interface BreedIDImage {
 interface PPData {
   breedsList: BreedID[];
   favoritesList: BreedIDImage[];
+  view: string;
 }
 let ppData: PPData = {
   breedsList: [],
   favoritesList: [],
+  view: 'home',
 };
 
 ppData = readData();
@@ -36,5 +38,11 @@ function readData(): PPData {
     return ppDataParsed;
   }
 }
+
+// ppData.favoritesList = [
+//   { name: 'German Shepherd Dog', id: 115, reference_image_id: 'SJyBfg5NX' },
+//   { name: 'Belgian Malinois', id: 36, reference_image_id: 'r1f_ll5VX' },
+//   { name: 'Golden Retriever', id: 121, reference_image_id: 'HJ7Pzg5EQ' },
+// ];
 
 writeData(ppData);
