@@ -570,7 +570,12 @@ $divFavoritesList.addEventListener('change', (event: Event) => {
 });
 
 // Updates favorites list without the deleted favorite
-$divFavoritesList.addEventListener('change', () => {
+$divFavoritesList.addEventListener('click', (event: Event) => {
+  const eventTarget = event.target as HTMLInputElement;
+  const breedRank = eventTarget
+    .closest('.favorite-breed-row')
+    ?.getAttribute('rank');
+  ppData.favoritesList.splice(Number(breedRank) - 1, 1);
   writeData(ppData);
   populateFavorites(ppData.favoritesList);
 });
