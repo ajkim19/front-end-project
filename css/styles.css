@@ -237,6 +237,16 @@ nav {
   border-radius: 15px;
 }
 
+.favorite-breed-trash {
+  color: red;
+  margin-left: 4px;
+  margin-right: 12px;
+}
+
+.favorite-breed-trash:hover {
+  cursor: pointer;
+}
+
 /* Desktop View */
 @media screen and (width >= 720px) {
   #home,
