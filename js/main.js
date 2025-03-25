@@ -341,15 +341,20 @@ async function populateBreedInfo(breedInfo) {
   $divBreedInfo.append($divBreedImages);
 }
 async function populateFavorites(favoritesList) {
+  const targetUrl = encodeURIComponent(
+    `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg?api_key=live_i0KyFDiDEYhKUkByM9Q3DI84russnt0PaUnhAZsBg9kp2sHK4W4jhm1wCyvTNjLz`,
+  );
   try {
     const response = await fetch(
-      `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`,
+      'https://cors.learningfuze.com/?url=' + targetUrl,
     );
     if (!response.ok) {
       throw new Error(`Image is unavailable. Status: ${response.status}`);
-    } else {
-      $imgFavoritesPageImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`;
     }
+    console.log(
+      '?api_key=live_i0KyFDiDEYhKUkByM9Q3DI84russnt0PaUnhAZsBg9kp2sHK4W4jhm1wCyvTNjLz',
+    );
+    $imgFavoritesPageImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg?api_key=live_i0KyFDiDEYhKUkByM9Q3DI84russnt0PaUnhAZsBg9kp2sHK4W4jhm1wCyvTNjLz`;
   } catch (error) {
     $imgFavoritesPageImage.src = 'images/image-unavailable-icon.avif';
     console.error('Error:', error);
@@ -375,7 +380,7 @@ async function populateFavorites(favoritesList) {
     $divFavBreedInfoName.textContent = `${favoritesList[i].name}`;
     const $imgFavBreedImage = document.createElement('img');
     $imgFavBreedImage.className = 'favorite-breed-info-image';
-    $imgFavBreedImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[i].reference_image_id}.jpg`;
+    $imgFavBreedImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[i].reference_image_id}.jpg?api_key=live_i0KyFDiDEYhKUkByM9Q3DI84russnt0PaUnhAZsBg9kp2sHK4W4jhm1wCyvTNjLz`;
     const $iFavBreedTrash = document.createElement('i');
     $iFavBreedTrash.className = 'fa-solid fa-trash favorite-breed-trash';
     $divFavBreedRow.append($inputFavBreedRank);
@@ -406,9 +411,12 @@ $selectBreedsList.addEventListener('change', async (event) => {
   } else {
     await fetchBreedInfo(Number(eventTarget.value));
     populateBreedInfo(breedInfo);
+    const targetUrl = encodeURIComponent(
+      `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg?api_key=live_i0KyFDiDEYhKUkByM9Q3DI84russnt0PaUnhAZsBg9kp2sHK4W4jhm1wCyvTNjLz`,
+    );
     try {
       const response = await fetch(
-        `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`,
+        'https://cors.learningfuze.com/?url=' + targetUrl,
       );
       if (!response.ok) {
         throw new Error(`Image is unavailable. Status: ${response.status}`);
@@ -475,7 +483,7 @@ $divFavoritesList.addEventListener('click', (event) => {
   const breedRank = eventTarget
     .closest('.favorite-breed-row')
     ?.getAttribute('rank');
-  ppData.favoritesList.splice(Number(breedRank) - 1, 1)[0];
+  ppData.favoritesList.splice(Number(breedRank) - 1, 1);
   writeData(ppData);
   populateFavorites(ppData.favoritesList);
 });

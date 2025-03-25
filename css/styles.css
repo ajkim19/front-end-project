@@ -69,7 +69,7 @@ nav {
   padding: 8px 20px;
   border: 2px solid #00a7d9;
   border-radius: 8px;
-  margin: 4px;
+  margin: 0 4px;
 }
 
 #home:active,
@@ -253,7 +253,7 @@ nav {
   #breeds,
   #favorites {
     font-size: 24px;
-    padding: 4px 20px;
+    padding: 1px 16px;
   }
 
   .page-view-container {
