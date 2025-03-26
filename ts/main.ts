@@ -561,10 +561,12 @@ $ulNavBarNav.addEventListener('click', (event: Event) => {
 $divFavoritesList.addEventListener('change', (event: Event) => {
   const eventTarget = event.target as HTMLInputElement;
   const breedRank = eventTarget.closest('.favorite-breed-row');
-  const oldRank = breedRank?.getAttribute('rank');
-  const newRank = eventTarget.value;
-  const favBreed = ppData.favoritesList.splice(Number(oldRank) - 1, 1)[0];
-  ppData.favoritesList.splice(Number(newRank) - 1, 0, favBreed);
+  const oldRank = Number(breedRank?.getAttribute('rank'));
+  const newRank = Number(eventTarget.value);
+  const favBreed = ppData.favoritesList.splice(oldRank - 1, 1)[0];
+  console.log('favBreed', favBreed);
+  ppData.favoritesList.splice(newRank - 1, 0, favBreed);
+  console.log('ppData.favoritesList', ppData.favoritesList);
   writeData(ppData);
   populateFavorites(ppData.favoritesList);
 });
@@ -572,10 +574,12 @@ $divFavoritesList.addEventListener('change', (event: Event) => {
 // Updates favorites list without the deleted favorite
 $divFavoritesList.addEventListener('click', (event: Event) => {
   const eventTarget = event.target as HTMLInputElement;
-  const breedRank = eventTarget
-    .closest('.favorite-breed-row')
-    ?.getAttribute('rank');
-  ppData.favoritesList.splice(Number(breedRank) - 1, 1);
-  writeData(ppData);
-  populateFavorites(ppData.favoritesList);
+  if (eventTarget.classList.contains('fa-trash')) {
+    const breedRank = eventTarget
+      .closest('.favorite-breed-row')
+      ?.getAttribute('rank');
+    ppData.favoritesList.splice(Number(breedRank) - 1, 1);
+    writeData(ppData);
+    populateFavorites(ppData.favoritesList);
+  }
 });
