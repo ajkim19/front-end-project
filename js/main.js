@@ -440,9 +440,9 @@ $divBreedInfo.addEventListener('click', (event) => {
         }
       }
     }
+    writeData(ppData);
+    populateFavorites(ppData.favoritesList);
   }
-  writeData(ppData);
-  populateFavorites(ppData.favoritesList);
 });
 // Toggles between different page views
 $ulNavBarNav.addEventListener('click', (event) => {
@@ -475,10 +475,17 @@ $divFavoritesList.addEventListener('change', (event) => {
 $divFavoritesList.addEventListener('click', (event) => {
   const eventTarget = event.target;
   if (eventTarget.classList.contains('fa-trash')) {
-    const breedRank = eventTarget
-      .closest('.favorite-breed-row')
-      ?.getAttribute('rank');
-    ppData.favoritesList.splice(Number(breedRank) - 1, 1);
+    const breedRank = Number(
+      eventTarget.closest('.favorite-breed-row')?.getAttribute('rank'),
+    );
+    if (breedInfo.id === ppData.favoritesList[breedRank - 1].id) {
+      const $iBreedNameStar = document.querySelector('i.fa-star');
+      if (!$iBreedNameStar) {
+        throw new Error('$iBreedNameStar does not exist');
+      }
+      $iBreedNameStar.className = 'fa-regular fa-star breed-info-name-star';
+    }
+    ppData.favoritesList.splice(breedRank - 1, 1);
     writeData(ppData);
     populateFavorites(ppData.favoritesList);
   }
