@@ -14,6 +14,18 @@ const $ulNavBarNav = document.querySelector('.navbar-nav');
 if (!$ulNavBarNav) throw new Error('$ulNavBarNav does not exist');
 const $dataViews = document.querySelectorAll('.view');
 if (!$dataViews) throw new Error('$dataViews does not exist');
+const $modals = document.querySelector('.modals');
+if (!$modals) throw new Error('$modals does not exist');
+const $divFavoritesModalMessage = $modals.querySelector(
+  '.favorites-modal-message',
+);
+if (!$divFavoritesModalMessage)
+  throw new Error('$divFavoritesModalMessage does not exist');
+const $divFavoritesModalConfirmation = $modals.querySelector(
+  '.favorites-modal-confirmation',
+);
+if (!$divFavoritesModalConfirmation)
+  throw new Error('$divFavoritesModalConfirmation does not exist');
 let breedInfo = {
   id: 0,
   name: '',
@@ -386,7 +398,7 @@ async function populateFavorites(favoritesList) {
     $divFavoritesList.append($divFavBreedRow);
   }
 }
-// Star of the application
+// Initiates the application with last known view
 for (const view of $dataViews) {
   const $viewHTMLElement = view;
   if ($viewHTMLElement.dataset.view === ppData.view) {
@@ -397,7 +409,21 @@ for (const view of $dataViews) {
 }
 populateBreedsList(ppData.breedsList);
 populateFavorites(ppData.favoritesList);
-// Displays breed info onto the page
+// Toggles between different page views
+$ulNavBarNav.addEventListener('click', (event) => {
+  const eventTarget = event.target;
+  for (const view of $dataViews) {
+    const $viewHTMLElement = view;
+    if ($viewHTMLElement.dataset.view === eventTarget.id) {
+      $viewHTMLElement.className = 'view';
+      ppData.view = $viewHTMLElement.dataset.view;
+    } else {
+      $viewHTMLElement.className = 'view hidden';
+    }
+  }
+  writeData(ppData);
+});
+// Displays breed info of a selection onto the page
 $selectBreedsList.addEventListener('change', async (event) => {
   const eventTarget = event.target;
   if (!eventTarget.value) {
@@ -421,17 +447,28 @@ $selectBreedsList.addEventListener('change', async (event) => {
     }
   }
 });
-// Toggles between open and closed star
+// Confirms to add a breed to favorites
 $divBreedInfo.addEventListener('click', (event) => {
   const eventTarget = event.target;
   if (eventTarget.classList.contains('fa-star')) {
     if (eventTarget.classList.contains('fa-regular')) {
-      eventTarget.className = 'fa-solid fa-star breed-info-name-star';
-      ppData.favoritesList.push({
-        name: breedInfo.name,
-        id: breedInfo.id,
-        reference_image_id: breedInfo.reference_image_id,
-      });
+      // Clears previous modal message
+      $divFavoritesModalConfirmation.innerHTML = '';
+      // Displays modals with a backdrop
+      $modals.className = 'modals';
+      // Prompts to the user for confirmation
+      $divFavoritesModalMessage.innerHTML = `Are you sure want to add <strong>${breedInfo.name}</strong> to your favorites?`;
+      // Displays the options to confirm or deny the addition to favorites
+      const $divYes = document.createElement('div');
+      $divYes.className =
+        'flex favorites-modal-option favorites-modal-option-yes';
+      const $iStar = document.createElement('i');
+      $divYes.innerHTML = '<i class="fa-solid fa-star"></i>Yes!';
+      const $divNo = document.createElement('div');
+      $divNo.className = 'favorites-modal-option favorites-modal-option-no';
+      $divNo.textContent = 'No';
+      $divFavoritesModalConfirmation.append($divYes);
+      $divFavoritesModalConfirmation.append($divNo);
     } else {
       eventTarget.className = 'fa-regular fa-star breed-info-name-star';
       for (let i = 0; i < ppData.favoritesList.length; i++) {
@@ -444,19 +481,35 @@ $divBreedInfo.addEventListener('click', (event) => {
     populateFavorites(ppData.favoritesList);
   }
 });
-// Toggles between different page views
-$ulNavBarNav.addEventListener('click', (event) => {
+// Displays verification of addition to favorites list
+$divFavoritesModalConfirmation.addEventListener('click', (event) => {
   const eventTarget = event.target;
-  for (const view of $dataViews) {
-    const $viewHTMLElement = view;
-    if ($viewHTMLElement.dataset.view === eventTarget.id) {
-      $viewHTMLElement.className = 'view';
-      ppData.view = $viewHTMLElement.dataset.view;
+  if (eventTarget.classList.contains('favorites-modal-option')) {
+    if (eventTarget.classList.contains('favorites-modal-option-yes')) {
+      // Clears previous modal message
+      $divFavoritesModalConfirmation.innerHTML = '';
+      $divFavoritesModalMessage.innerHTML = `<strong>${breedInfo.name}</strong> has been added to your favorites!`;
+      const $divOkay = document.createElement('div');
+      $divOkay.className = 'favorites-modal-option favorites-modal-option-okay';
+      $divOkay.innerHTML = '<i class="fa-solid fa-star"></i>Okay!';
+      $divFavoritesModalConfirmation.append($divOkay);
+      // Replaces the open star with a closed star
+      const $favoritesStar = $divBreedInfo.querySelector(
+        '.breed-info-name-star',
+      );
+      if (!$favoritesStar) throw new Error('$favoritesStar does not exist');
+      $favoritesStar.className = 'fa-solid fa-star breed-info-name-star';
+      ppData.favoritesList.push({
+        name: breedInfo.name,
+        id: breedInfo.id,
+        reference_image_id: breedInfo.reference_image_id,
+      });
     } else {
-      $viewHTMLElement.className = 'view hidden';
+      $modals.className = 'modals hidden';
     }
   }
   writeData(ppData);
+  populateFavorites(ppData.favoritesList);
 });
 // Updates favorites list with new rankings
 $divFavoritesList.addEventListener('change', (event) => {

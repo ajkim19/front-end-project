@@ -23,7 +23,7 @@ nav {
   font-family: Righteous, serif;
   font-weight: 400;
   font-style: normal;
-  box-sizing: border-box;
+  box-sizing: border;
 }
 
 #logo,
@@ -94,7 +94,7 @@ nav {
   flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
+  box-sizing: border;
   padding: 4px 8px;
 }
 
@@ -107,7 +107,7 @@ nav {
 .favorites-page-image {
   max-width: 90%;
   max-height: 293px;
-  box-sizing: border-box;
+  box-sizing: border;
   border-radius: 25px;
   margin: 20px auto;
 }
@@ -170,7 +170,8 @@ nav {
   width: 5%;
 }
 
-.breed-info-name-star:hover {
+.breed-info-name-star:hover,
+.favorites-modal-option {
   cursor: pointer;
 }
 
@@ -231,7 +232,7 @@ nav {
 }
 
 .favorite-breed-info-image {
-  box-sizing: border-box;
+  box-sizing: border;
   height: 100px;
   padding: 8px;
   border-radius: 15px;
@@ -245,6 +246,97 @@ nav {
 
 .favorite-breed-trash:hover {
   cursor: pointer;
+}
+
+.modals {
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modals-backdrop {
+  position: fixed;
+  background-color: rgb(0, 0, 0, 0.5);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+}
+
+.favorites-modal {
+  flex-wrap: wrap;
+  flex-direction: column;
+  background-color: white;
+  width: 80%;
+  padding: 20px 30px;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 25%;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorites-modal-content {
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.favorites-modal-message {
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+  margin: 10px auto;
+}
+
+.favorites-modal-confirmation {
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.favorites-modal-option {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 10px 20px;
+  border-radius: 5px;
+}
+
+.favorites-modal-option-yes {
+  color: yellow;
+  background-color: rgb(0, 152, 0);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 25px;
+  align-items: center;
+}
+
+.favorites-modal-option-yes > i,
+.favorites-modal-option-okay > i {
+  margin-right: 5px;
+}
+
+.favorites-modal-option-no {
+  color: white;
+  background-color: red;
+  padding: 10px 35px;
+}
+
+.favorites-modal-option-okay {
+  color: yellow;
+  background-color: #00a7d9;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 25px;
 }
 
 /* Desktop View */
@@ -284,5 +376,18 @@ nav {
 
   .breed-info-breed-images-additional {
     width: calc(100% / 3);
+  }
+
+  .favorites-modal {
+    margin-top: 225px;
+    width: 500px;
+  }
+
+  .favorites-modal-message {
+    font-size: 22px;
+  }
+
+  .favorites-modal-option {
+    font-size: 20px;
   }
 }
