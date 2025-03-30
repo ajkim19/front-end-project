@@ -54,6 +54,8 @@ const $ulNavBarNav = document.querySelector('.navbar-nav') as HTMLUListElement;
 if (!$ulNavBarNav) throw new Error('$ulNavBarNav does not exist');
 const $dataViews = document.querySelectorAll('.view');
 if (!$dataViews) throw new Error('$dataViews does not exist');
+const $divFavoritesModal = document.querySelector('.favorites-modal');
+if (!$divFavoritesModal) throw new Error('$divFavoritesModal does not exist');
 
 let breedInfo: BreedInfo = {
   id: 0,

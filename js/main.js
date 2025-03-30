@@ -14,6 +14,8 @@ const $ulNavBarNav = document.querySelector('.navbar-nav');
 if (!$ulNavBarNav) throw new Error('$ulNavBarNav does not exist');
 const $dataViews = document.querySelectorAll('.view');
 if (!$dataViews) throw new Error('$dataViews does not exist');
+const $divFavoritesModal = document.querySelector('.favorites-modal');
+if (!$divFavoritesModal) throw new Error('$divFavoritesModal does not exist');
 let breedInfo = {
   id: 0,
   name: '',
@@ -346,12 +348,12 @@ async function populateFavorites(favoritesList) {
       `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`,
     );
     if (!response.ok) {
-      $imgFavoritesPageImage.src = 'images/image-unavailable-icon.avif';
       throw new Error(`Image is unavailable. Status: ${response.status}`);
     } else {
       $imgFavoritesPageImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`;
     }
   } catch (error) {
+    $imgFavoritesPageImage.src = 'images/image-unavailable-icon.avif';
     console.error('Error:', error);
   }
   // Clears the div of previous favorites list
