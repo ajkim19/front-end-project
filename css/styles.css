@@ -316,6 +316,12 @@ nav {
   padding-bottom: 10px;
   padding-left: 15px;
   padding-right: 25px;
+  align-items: center;
+}
+
+.favorites-modal-option-yes > i,
+.favorites-modal-option-okay > i {
+  margin-right: 5px;
 }
 
 .favorites-modal-option-no {
