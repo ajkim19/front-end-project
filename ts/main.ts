@@ -54,8 +54,6 @@ const $ulNavBarNav = document.querySelector('.navbar-nav') as HTMLUListElement;
 if (!$ulNavBarNav) throw new Error('$ulNavBarNav does not exist');
 const $dataViews = document.querySelectorAll('.view');
 if (!$dataViews) throw new Error('$dataViews does not exist');
-const $divFavoritesModal = document.querySelector('.favorites-modal');
-if (!$divFavoritesModal) throw new Error('$divFavoritesModal does not exist');
 
 let breedInfo: BreedInfo = {
   id: 0,
@@ -495,6 +493,21 @@ for (const view of $dataViews) {
 populateBreedsList(ppData.breedsList);
 populateFavorites(ppData.favoritesList);
 
+// Toggles between different page views
+$ulNavBarNav.addEventListener('click', (event: Event) => {
+  const eventTarget = event.target as HTMLElement;
+  for (const view of $dataViews) {
+    const $viewHTMLElement = view as HTMLElement;
+    if ($viewHTMLElement.dataset.view === eventTarget.id) {
+      $viewHTMLElement.className = 'view';
+      ppData.view = $viewHTMLElement.dataset.view;
+    } else {
+      $viewHTMLElement.className = 'view hidden';
+    }
+  }
+  writeData(ppData);
+});
+
 // Displays breed info onto the page
 $selectBreedsList.addEventListener('change', async (event: Event) => {
   const eventTarget = event.target as HTMLOptionElement;
@@ -542,21 +555,6 @@ $divBreedInfo.addEventListener('click', (event: Event) => {
     writeData(ppData);
     populateFavorites(ppData.favoritesList);
   }
-});
-
-// Toggles between different page views
-$ulNavBarNav.addEventListener('click', (event: Event) => {
-  const eventTarget = event.target as HTMLElement;
-  for (const view of $dataViews) {
-    const $viewHTMLElement = view as HTMLElement;
-    if ($viewHTMLElement.dataset.view === eventTarget.id) {
-      $viewHTMLElement.className = 'view';
-      ppData.view = $viewHTMLElement.dataset.view;
-    } else {
-      $viewHTMLElement.className = 'view hidden';
-    }
-  }
-  writeData(ppData);
 });
 
 // Updates favorites list with new rankings
