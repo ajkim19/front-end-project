@@ -450,32 +450,39 @@ $selectBreedsList.addEventListener('change', async (event) => {
 // Confirms to add a breed to favorites
 $divBreedInfo.addEventListener('click', (event) => {
   const eventTarget = event.target;
+  // Clears previous modal message
+  $divFavoritesModalConfirmation.innerHTML = '';
+  // Displays modals with a backdrop
+  $modals.className = 'modals';
   if (eventTarget.classList.contains('fa-star')) {
     if (eventTarget.classList.contains('fa-regular')) {
-      // Clears previous modal message
-      $divFavoritesModalConfirmation.innerHTML = '';
-      // Displays modals with a backdrop
-      $modals.className = 'modals';
       // Prompts to the user for confirmation
       $divFavoritesModalMessage.innerHTML = `Are you sure want to add <strong>${breedInfo.name}</strong> to your favorites?`;
       // Displays the options to confirm or deny the addition to favorites
       const $divYes = document.createElement('div');
       $divYes.className =
-        'flex favorites-modal-option favorites-modal-option-yes';
-      const $iStar = document.createElement('i');
+        'flex favorites-modal-option favorites-modal-option-add';
       $divYes.innerHTML = '<i class="fa-solid fa-star"></i>Yes!';
       const $divNo = document.createElement('div');
-      $divNo.className = 'favorites-modal-option favorites-modal-option-no';
-      $divNo.textContent = 'No';
+      $divNo.className =
+        'flex favorites-modal-option favorites-modal-option-cancel';
+      $divNo.innerHTML = '<i class="fa fa-times"></i>Cancel';
       $divFavoritesModalConfirmation.append($divYes);
       $divFavoritesModalConfirmation.append($divNo);
-    } else {
-      eventTarget.className = 'fa-regular fa-star breed-info-name-star';
-      for (let i = 0; i < ppData.favoritesList.length; i++) {
-        if (breedInfo.id === ppData.favoritesList[i].id) {
-          ppData.favoritesList.splice(i, 1);
-        }
-      }
+    } else if (eventTarget.classList.contains('fa-solid')) {
+      // Prompts to the user for confirmation
+      $divFavoritesModalMessage.innerHTML = `Are you sure want to remove <strong>${breedInfo.name}</strong> from your favorites?`;
+      // Displays the options to confirm or deny the addition to favorites
+      const $divYes = document.createElement('div');
+      $divYes.className =
+        'flex favorites-modal-option favorites-modal-option-remove';
+      $divYes.innerHTML = '<i class="fa-solid fa-trash"></i>Remove';
+      const $divNo = document.createElement('div');
+      $divNo.className =
+        'flex favorites-modal-option favorites-modal-option-cancel';
+      $divNo.innerHTML = '<i class="fa fa-times"></i>Cancel';
+      $divFavoritesModalConfirmation.append($divYes);
+      $divFavoritesModalConfirmation.append($divNo);
     }
     writeData(ppData);
     populateFavorites(ppData.favoritesList);
@@ -485,12 +492,14 @@ $divBreedInfo.addEventListener('click', (event) => {
 $divFavoritesModalConfirmation.addEventListener('click', (event) => {
   const eventTarget = event.target;
   if (eventTarget.classList.contains('favorites-modal-option')) {
-    if (eventTarget.classList.contains('favorites-modal-option-yes')) {
+    if (eventTarget.classList.contains('favorites-modal-option-add')) {
+      console.log(`Clicked ${eventTarget}`);
       // Clears previous modal message
       $divFavoritesModalConfirmation.innerHTML = '';
       $divFavoritesModalMessage.innerHTML = `<strong>${breedInfo.name}</strong> has been added to your favorites!`;
       const $divOkay = document.createElement('div');
-      $divOkay.className = 'favorites-modal-option favorites-modal-option-okay';
+      $divOkay.className =
+        'favorites-modal-option favorites-modal-option-add favorites-modal-option-okay';
       $divOkay.innerHTML = '<i class="fa-solid fa-star"></i>Okay!';
       $divFavoritesModalConfirmation.append($divOkay);
       // Replaces the open star with a closed star
@@ -504,12 +513,53 @@ $divFavoritesModalConfirmation.addEventListener('click', (event) => {
         id: breedInfo.id,
         reference_image_id: breedInfo.reference_image_id,
       });
-    } else {
-      $modals.className = 'modals hidden';
+      console.log('adding');
     }
   }
   writeData(ppData);
   populateFavorites(ppData.favoritesList);
+});
+// Displays verification of removal from favorites list
+$divFavoritesModalConfirmation.addEventListener('click', (event) => {
+  const eventTarget = event.target;
+  if (eventTarget.classList.contains('favorites-modal-option')) {
+    if (eventTarget.classList.contains('favorites-modal-option-remove')) {
+      // Clears previous modal message
+      $divFavoritesModalConfirmation.innerHTML = '';
+      $divFavoritesModalMessage.innerHTML = `<strong>${breedInfo.name}</strong> has been removed your favorites!`;
+      const $divOkay = document.createElement('div');
+      $divOkay.className =
+        'favorites-modal-option favorites-modal-option-remove favorites-modal-option-okay';
+      $divOkay.innerHTML = '<i class="fa-solid fa-trash"></i>Okay';
+      $divFavoritesModalConfirmation.append($divOkay);
+      // Replaces the closed star with an open star
+      const $favoritesStar = $divBreedInfo.querySelector(
+        '.breed-info-name-star',
+      );
+      if (!$favoritesStar) throw new Error('$favoritesStar does not exist');
+      $favoritesStar.className = 'fa-regular fa-star breed-info-name-star';
+      for (let i = 0; i < ppData.favoritesList.length; i++) {
+        if (breedInfo.id === ppData.favoritesList[i].id) {
+          ppData.favoritesList.splice(i, 1);
+        }
+      }
+      console.log('removing');
+    }
+  }
+  writeData(ppData);
+  populateFavorites(ppData.favoritesList);
+});
+// Closes the modal when canceling the addition/removal of breed in favorites list
+$divFavoritesModalConfirmation.addEventListener('click', (event) => {
+  const eventTarget = event.target;
+  if (eventTarget.classList.contains('favorites-modal-option')) {
+    if (
+      eventTarget.classList.contains('favorites-modal-option-cancel') ||
+      eventTarget.classList.contains('favorites-modal-option-okay')
+    ) {
+      $modals.className = 'modals hidden';
+    }
+  }
 });
 // Updates favorites list with new rankings
 $divFavoritesList.addEventListener('change', (event) => {
