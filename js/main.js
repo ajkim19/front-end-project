@@ -455,17 +455,18 @@ $divBreedInfo.addEventListener('click', (event) => {
   // Displays modals with a backdrop
   $modals.className = 'modals';
   if (eventTarget.classList.contains('fa-star')) {
+    console.log('star');
     if (eventTarget.classList.contains('fa-regular')) {
       // Prompts to the user for confirmation
       $divFavoritesModalMessage.innerHTML = `Are you sure want to add <strong>${breedInfo.name}</strong> to your favorites?`;
       // Displays the options to confirm or deny the addition to favorites
       const $divYes = document.createElement('div');
       $divYes.className =
-        'flex favorites-modal-option favorites-modal-option-add';
+        'flex favorites-modal-option favorites-modal-option-add-btn';
       $divYes.innerHTML = '<i class="fa-solid fa-star"></i>Yes!';
       const $divNo = document.createElement('div');
       $divNo.className =
-        'flex favorites-modal-option favorites-modal-option-cancel';
+        'flex favorites-modal-option favorites-modal-option-cancel-btn';
       $divNo.innerHTML = '<i class="fa fa-times"></i>Cancel';
       $divFavoritesModalConfirmation.append($divYes);
       $divFavoritesModalConfirmation.append($divNo);
@@ -475,11 +476,11 @@ $divBreedInfo.addEventListener('click', (event) => {
       // Displays the options to confirm or deny the addition to favorites
       const $divYes = document.createElement('div');
       $divYes.className =
-        'flex favorites-modal-option favorites-modal-option-remove';
+        'flex favorites-modal-option favorites-modal-option-remove-btn';
       $divYes.innerHTML = '<i class="fa-solid fa-trash"></i>Remove';
       const $divNo = document.createElement('div');
       $divNo.className =
-        'flex favorites-modal-option favorites-modal-option-cancel';
+        'flex favorites-modal-option favorites-modal-option-cancel-btn';
       $divNo.innerHTML = '<i class="fa fa-times"></i>Cancel';
       $divFavoritesModalConfirmation.append($divYes);
       $divFavoritesModalConfirmation.append($divNo);
@@ -492,14 +493,13 @@ $divBreedInfo.addEventListener('click', (event) => {
 $divFavoritesModalConfirmation.addEventListener('click', (event) => {
   const eventTarget = event.target;
   if (eventTarget.classList.contains('favorites-modal-option')) {
-    if (eventTarget.classList.contains('favorites-modal-option-add')) {
-      console.log(`Clicked ${eventTarget}`);
+    if (eventTarget.classList.contains('favorites-modal-option-add-btn')) {
       // Clears previous modal message
       $divFavoritesModalConfirmation.innerHTML = '';
       $divFavoritesModalMessage.innerHTML = `<strong>${breedInfo.name}</strong> has been added to your favorites!`;
       const $divOkay = document.createElement('div');
       $divOkay.className =
-        'favorites-modal-option favorites-modal-option-add favorites-modal-option-okay';
+        'favorites-modal-option favorites-modal-option-add favorites-modal-option-okay-btn';
       $divOkay.innerHTML = '<i class="fa-solid fa-star"></i>Okay!';
       $divFavoritesModalConfirmation.append($divOkay);
       // Replaces the open star with a closed star
@@ -513,23 +513,15 @@ $divFavoritesModalConfirmation.addEventListener('click', (event) => {
         id: breedInfo.id,
         reference_image_id: breedInfo.reference_image_id,
       });
-      console.log('adding');
-    }
-  }
-  writeData(ppData);
-  populateFavorites(ppData.favoritesList);
-});
-// Displays verification of removal from favorites list
-$divFavoritesModalConfirmation.addEventListener('click', (event) => {
-  const eventTarget = event.target;
-  if (eventTarget.classList.contains('favorites-modal-option')) {
-    if (eventTarget.classList.contains('favorites-modal-option-remove')) {
+    } else if (
+      eventTarget.classList.contains('favorites-modal-option-remove-btn')
+    ) {
       // Clears previous modal message
       $divFavoritesModalConfirmation.innerHTML = '';
       $divFavoritesModalMessage.innerHTML = `<strong>${breedInfo.name}</strong> has been removed your favorites!`;
       const $divOkay = document.createElement('div');
       $divOkay.className =
-        'favorites-modal-option favorites-modal-option-remove favorites-modal-option-okay';
+        'favorites-modal-option favorites-modal-option-remove favorites-modal-option-okay-btn';
       $divOkay.innerHTML = '<i class="fa-solid fa-trash"></i>Okay';
       $divFavoritesModalConfirmation.append($divOkay);
       // Replaces the closed star with an open star
@@ -543,7 +535,6 @@ $divFavoritesModalConfirmation.addEventListener('click', (event) => {
           ppData.favoritesList.splice(i, 1);
         }
       }
-      console.log('removing');
     }
   }
   writeData(ppData);
@@ -554,8 +545,8 @@ $divFavoritesModalConfirmation.addEventListener('click', (event) => {
   const eventTarget = event.target;
   if (eventTarget.classList.contains('favorites-modal-option')) {
     if (
-      eventTarget.classList.contains('favorites-modal-option-cancel') ||
-      eventTarget.classList.contains('favorites-modal-option-okay')
+      eventTarget.classList.contains('favorites-modal-option-cancel-btn') ||
+      eventTarget.classList.contains('favorites-modal-option-okay-btn')
     ) {
       $modals.className = 'modals hidden';
     }
@@ -568,9 +559,7 @@ $divFavoritesList.addEventListener('change', (event) => {
   const oldRank = Number(breedRank?.getAttribute('rank'));
   const newRank = Number(eventTarget.value);
   const favBreed = ppData.favoritesList.splice(oldRank - 1, 1)[0];
-  console.log('favBreed', favBreed);
   ppData.favoritesList.splice(newRank - 1, 0, favBreed);
-  console.log('ppData.favoritesList', ppData.favoritesList);
   writeData(ppData);
   populateFavorites(ppData.favoritesList);
 });
