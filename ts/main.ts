@@ -552,11 +552,10 @@ $divBreedInfo.addEventListener('click', (event: Event) => {
   // Clears previous modal message
   $divFavoritesModalConfirmation.innerHTML = '';
 
-  // Displays modals with a backdrop
-  $modals.className = 'modals';
-
   if (eventTarget.classList.contains('fa-star')) {
-    console.log('star');
+    // Displays modals with a backdrop
+    $modals.className = 'modals';
+
     if (eventTarget.classList.contains('fa-regular')) {
       // Prompts to the user for confirmation
       $divFavoritesModalMessage.innerHTML = `Are you sure want to add <strong>${breedInfo.name}</strong> to your favorites?`;
