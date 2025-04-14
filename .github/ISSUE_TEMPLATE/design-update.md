@@ -1,7 +1,7 @@
 ---
 name: Design Update
 about: Use this template for changing how an existing feature looks.
-title: "Design Update: "
+title: 'Design Update: '
 ---
 
 ## ⚙️ Feature

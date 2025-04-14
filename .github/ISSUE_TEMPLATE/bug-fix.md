@@ -1,7 +1,7 @@
 ---
 name: Bug Fix
 about: Use this template for fixing incorrect behavior in the app.
-title: "Bug: "
+title: 'Bug: '
 ---
 
 ## 🐛 Bug

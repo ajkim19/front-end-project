@@ -1,7 +1,7 @@
 ---
 name: Refactor
 about: Use this template for fixing code structure only.
-title: "Refactor: "
+title: 'Refactor: '
 ---
 
 ## ✅ Task List
