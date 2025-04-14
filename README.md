@@ -1,4 +1,4 @@
-# Picking
+# Picking Pals
 
 A dynamic HTML, CSS, and TypeScript solo project.
 
