@@ -1,4 +1,4 @@
-# Picking
+# Picking Pals
 
 A dynamic HTML, CSS, and TypeScript solo project.
 
@@ -11,7 +11,7 @@ HTML, CSS, and TypeScript were utilized in the creation of this application.
 ## Features
 
 - **Concise Information**: Most of the descriptions provided are factual, with little room for interpretation.
-- **Favorite a Breed**: When browsing through the list of dogs, breeds can be saved to a favorites list for future reference.
+- **Create a Favorites List**: When browsing through the list of dogs, breeds can be saved to a favorites list for future reference.
 - **Rank Your Favorites**: Breeds in the favorites list can be ranked by desirability.
 - **Remove a Favorite**: Breeds in the favorites list can also be removed.
 
