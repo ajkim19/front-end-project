@@ -211,6 +211,7 @@ nav {
   background-color: white;
   width: 100%;
   align-items: center;
+  border: 1px solid gray;
 }
 
 .favorite-breed-rank {
@@ -221,7 +222,7 @@ nav {
 
 .favorite-breed-info {
   width: 100%;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -229,19 +230,21 @@ nav {
   color: rgb(100, 100, 100);
   font-weight: 600;
   font-size: 20px;
+  margin-top: 5px;
 }
 
 .favorite-breed-info-image {
   box-sizing: border;
-  height: 100px;
+  max-width: 60%;
   padding: 8px;
-  border-radius: 15px;
+  border-radius: 20px;
 }
 
 .favorite-breed-trash {
   color: red;
   margin-left: 4px;
   margin-right: 12px;
+  align-self: center;
 }
 
 .favorite-breed-trash:hover {
@@ -395,5 +398,19 @@ nav {
 
   .favorites-modal-option {
     font-size: 20px;
+  }
+
+  .favorite-breed-info {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .favorite-breed-info-image {
+    box-sizing: border;
+    max-height: 125px;
+    padding: 8px;
+    border-radius: 15px;
   }
 }
