@@ -170,12 +170,13 @@ async function fetchBreedImages(breedID: number): Promise<void> {
   }
 }
 
+// Obtains information on a selected breed
 async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   // Clears the div of any previous breed queries
   if (!$divBreedInfo) throw new Error('divBreedInfo does not exist');
   $divBreedInfo.innerHTML = '';
 
-  // Adds a div element for breed name
+  // Creates a div element for breed name
   const $divBreedName = document.createElement('div') as HTMLDivElement;
   $divBreedName.className = 'flex breed-info-name';
   const $iBreedNameStar = document.createElement('i') as HTMLElement;
@@ -200,7 +201,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedName.append($divBreedNameTitle);
   $divBreedInfo.append($divBreedName);
 
-  // Adds a div element for breed weight
+  // Creates a div element for breed weight
   const $divBreedWeight = document.createElement('div') as HTMLDivElement;
   $divBreedWeight.className = 'breed-info-details breed-info-weight';
   const $divBreedWeightLabel = document.createElement('div') as HTMLDivElement;
@@ -223,7 +224,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedWeight.append($divBreedWeightValue);
   $divBreedInfo.append($divBreedWeight);
 
-  // Adds a div element for breed height
+  // Creates a div element for breed height
   const $divBreedHeight = document.createElement('div') as HTMLDivElement;
   $divBreedHeight.className = 'breed-info-details breed-info-height';
   const $divBreedHeightLabel = document.createElement('div') as HTMLDivElement;
@@ -246,7 +247,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedHeight.append($divBreedHeightValue);
   $divBreedInfo.append($divBreedHeight);
 
-  // Adds a div element for breed life span
+  // Creates a div element for breed life span
   const $divBreedLifeSpan = document.createElement('div') as HTMLDivElement;
   $divBreedLifeSpan.className = 'breed-info-details breed-info-life-span';
   const $divBreedLifeSpanLabel = document.createElement(
@@ -264,7 +265,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedLifeSpan.append($divBreedLifeSpanValue);
   $divBreedInfo.append($divBreedLifeSpan);
 
-  // Adds a div element for breed temperament
+  // Creates a div element for breed temperament
   const $divBreedTemperament = document.createElement('div') as HTMLDivElement;
   $divBreedTemperament.className = 'breed-info-details breed-info-temperament';
   const $divBreedTemperamentLabel = document.createElement(
@@ -286,7 +287,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedTemperament.append($divBreedTemperamentValue);
   $divBreedInfo.append($divBreedTemperament);
 
-  // Adds a div element for breed group
+  // Creates a div element for breed group
   const $divBreedGroup = document.createElement('div') as HTMLDivElement;
   $divBreedGroup.className = 'breed-info-details breed-info-breed-group';
   const $divBreedGroupLabel = document.createElement('div') as HTMLDivElement;
@@ -304,7 +305,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedGroup.append($divBreedGroupValue);
   $divBreedInfo.append($divBreedGroup);
 
-  // Adds a div element for breed bred for
+  // Creates a div element for breed bred for
   const $divBreedBredFor = document.createElement('div') as HTMLDivElement;
   $divBreedBredFor.className = 'breed-info-details breed-info-breed-bred-for';
   const $divBreedBredForLabel = document.createElement('div') as HTMLDivElement;
@@ -322,7 +323,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedBredFor.append($divBreedBredForValue);
   $divBreedInfo.append($divBreedBredFor);
 
-  // Adds a div element for breed country code
+  // Creates a div element for breed country code
   const $divBreedCountyCode = document.createElement('div') as HTMLDivElement;
   $divBreedCountyCode.className =
     'breed-info-details breed-info-breed-country-code';
@@ -345,7 +346,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedCountyCode.append($divBreedCountyCodeValue);
   $divBreedInfo.append($divBreedCountyCode);
 
-  // Adds a div element for breed origin
+  // Creates a div element for breed origin
   const $divBreedOrigin = document.createElement('div') as HTMLDivElement;
   $divBreedOrigin.className = 'breed-info-details breed-info-breed-origin';
   const $divBreedOriginLabel = document.createElement('div') as HTMLDivElement;
@@ -363,7 +364,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedOrigin.append($divBreedOriginValue);
   $divBreedInfo.append($divBreedOrigin);
 
-  // Adds a div element for breed history
+  // Creates a div element for breed history
   const $divBreedHistory = document.createElement('div') as HTMLDivElement;
   $divBreedHistory.className = 'breed-info-details breed-info-breed-history';
   const $divBreedHistoryLabel = document.createElement('div') as HTMLDivElement;
@@ -381,7 +382,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedHistory.append($divBreedHistoryValue);
   $divBreedInfo.append($divBreedHistory);
 
-  // Adds a div element for breed description
+  // Creates a div element for breed description
   const $divBreedDescription = document.createElement('div') as HTMLDivElement;
   $divBreedDescription.className =
     'breed-info-details breed-info-breed-description';
@@ -404,7 +405,7 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
   $divBreedDescription.append($divBreedDescriptionValue);
   $divBreedInfo.append($divBreedDescription);
 
-  // Adds a div element for breed images
+  // Creates a div element for breed images
   const $divBreedImages = document.createElement('div') as HTMLDivElement;
   $divBreedImages.className = 'breed-info-breed-images';
   const $divBreedImagesLabel = document.createElement('div') as HTMLDivElement;
@@ -440,18 +441,11 @@ async function populateBreedInfo(breedInfo: BreedInfo): Promise<void> {
 }
 
 async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
-  try {
-    const response = await fetch(
-      `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`,
-    );
-    if (!response.ok) {
-      throw new Error(`Image is unavailable. Status: ${response.status}`);
-    } else {
-      $imgFavoritesPageImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`;
-    }
-  } catch (error) {
+  // Displays the reference image of the top favorite breed
+  if (favoritesList.length === 0) {
     $imgFavoritesPageImage.src = 'images/image-unavailable-icon.avif';
-    console.error('Error:', error);
+  } else {
+    $imgFavoritesPageImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`;
   }
 
   // Clears the div of previous favorites list
@@ -460,6 +454,7 @@ async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
 
   // Create a listing for a favorite breeds
   for (let i = 0; i < favoritesList.length; i++) {
+    // Creates input element for ranking feature
     const $divFavBreedRow = document.createElement('div') as HTMLDivElement;
     $divFavBreedRow.className = 'flex favorite-breed-row';
     $divFavBreedRow.setAttribute('rank', (i + 1).toString());
@@ -471,6 +466,8 @@ async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
     $inputFavBreedRank.min = '1';
     $inputFavBreedRank.max = favoritesList.length.toString();
     $inputFavBreedRank.value = (i + 1).toString();
+
+    // Creates the div element that displays the name of the breed
     const $divFavBreedInfo = document.createElement('div') as HTMLDivElement;
     $divFavBreedInfo.className = 'flex favorite-breed-info';
     const $divFavBreedInfoName = document.createElement(
@@ -478,11 +475,16 @@ async function populateFavorites(favoritesList: BreedIDImage[]): Promise<void> {
     ) as HTMLDivElement;
     $divFavBreedInfoName.className = 'favorite-breed-info-name';
     $divFavBreedInfoName.textContent = `${favoritesList[i].name}`;
+
+    // Creates the img element that displays the reference image of the breed
     const $imgFavBreedImage = document.createElement('img') as HTMLImageElement;
     $imgFavBreedImage.className = 'favorite-breed-info-image';
     $imgFavBreedImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[i].reference_image_id}.jpg`;
+
+    // Creates the trash bin icon
     const $iFavBreedTrash = document.createElement('i') as HTMLElement;
     $iFavBreedTrash.className = 'fa-solid fa-trash favorite-breed-trash';
+
     $divFavBreedRow.append($inputFavBreedRank);
     $divFavBreedInfo.append($divFavBreedInfoName);
     $divFavBreedInfo.append($imgFavBreedImage);
@@ -505,7 +507,7 @@ for (const view of $dataViews) {
 populateBreedsList(ppData.breedsList);
 populateFavorites(ppData.favoritesList);
 
-// Toggles between different page views
+// Toggles between different page views based on tab selection
 $ulNavBarNav.addEventListener('click', (event: Event) => {
   const eventTarget = event.target as HTMLElement;
   for (const view of $dataViews) {
@@ -529,18 +531,10 @@ $selectBreedsList.addEventListener('change', async (event: Event) => {
   } else {
     await fetchBreedInfo(Number(eventTarget.value));
     populateBreedInfo(breedInfo);
-    try {
-      const response = await fetch(
-        `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`,
-      );
-      if (!response.ok) {
-        throw new Error(`Image is unavailable. Status: ${response.status}`);
-      } else {
-        $imgBreedsPageImage.src = `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`;
-      }
-    } catch (error) {
+    if (!breedInfo.reference_image_id) {
       $imgBreedsPageImage.src = 'images/image-unavailable-icon.avif';
-      console.error('Error:', error);
+    } else {
+      $imgBreedsPageImage.src = `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`;
     }
   }
 });

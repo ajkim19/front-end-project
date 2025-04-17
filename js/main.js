@@ -117,11 +117,12 @@ async function fetchBreedImages(breedID) {
     console.error('Error:', error);
   }
 }
+// Obtains information on a selected breed
 async function populateBreedInfo(breedInfo) {
   // Clears the div of any previous breed queries
   if (!$divBreedInfo) throw new Error('divBreedInfo does not exist');
   $divBreedInfo.innerHTML = '';
-  // Adds a div element for breed name
+  // Creates a div element for breed name
   const $divBreedName = document.createElement('div');
   $divBreedName.className = 'flex breed-info-name';
   const $iBreedNameStar = document.createElement('i');
@@ -145,7 +146,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedNameTitle.append($h2BreedNameTitle);
   $divBreedName.append($divBreedNameTitle);
   $divBreedInfo.append($divBreedName);
-  // Adds a div element for breed weight
+  // Creates a div element for breed weight
   const $divBreedWeight = document.createElement('div');
   $divBreedWeight.className = 'breed-info-details breed-info-weight';
   const $divBreedWeightLabel = document.createElement('div');
@@ -165,7 +166,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedWeight.append($divBreedWeightLabel);
   $divBreedWeight.append($divBreedWeightValue);
   $divBreedInfo.append($divBreedWeight);
-  // Adds a div element for breed height
+  // Creates a div element for breed height
   const $divBreedHeight = document.createElement('div');
   $divBreedHeight.className = 'breed-info-details breed-info-height';
   const $divBreedHeightLabel = document.createElement('div');
@@ -185,7 +186,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedHeight.append($divBreedHeightLabel);
   $divBreedHeight.append($divBreedHeightValue);
   $divBreedInfo.append($divBreedHeight);
-  // Adds a div element for breed life span
+  // Creates a div element for breed life span
   const $divBreedLifeSpan = document.createElement('div');
   $divBreedLifeSpan.className = 'breed-info-details breed-info-life-span';
   const $divBreedLifeSpanLabel = document.createElement('div');
@@ -198,7 +199,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedLifeSpan.append($divBreedLifeSpanLabel);
   $divBreedLifeSpan.append($divBreedLifeSpanValue);
   $divBreedInfo.append($divBreedLifeSpan);
-  // Adds a div element for breed temperament
+  // Creates a div element for breed temperament
   const $divBreedTemperament = document.createElement('div');
   $divBreedTemperament.className = 'breed-info-details breed-info-temperament';
   const $divBreedTemperamentLabel = document.createElement('div');
@@ -215,7 +216,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedTemperament.append($divBreedTemperamentLabel);
   $divBreedTemperament.append($divBreedTemperamentValue);
   $divBreedInfo.append($divBreedTemperament);
-  // Adds a div element for breed group
+  // Creates a div element for breed group
   const $divBreedGroup = document.createElement('div');
   $divBreedGroup.className = 'breed-info-details breed-info-breed-group';
   const $divBreedGroupLabel = document.createElement('div');
@@ -232,7 +233,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedGroup.append($divBreedGroupLabel);
   $divBreedGroup.append($divBreedGroupValue);
   $divBreedInfo.append($divBreedGroup);
-  // Adds a div element for breed bred for
+  // Creates a div element for breed bred for
   const $divBreedBredFor = document.createElement('div');
   $divBreedBredFor.className = 'breed-info-details breed-info-breed-bred-for';
   const $divBreedBredForLabel = document.createElement('div');
@@ -249,7 +250,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedBredFor.append($divBreedBredForLabel);
   $divBreedBredFor.append($divBreedBredForValue);
   $divBreedInfo.append($divBreedBredFor);
-  // Adds a div element for breed country code
+  // Creates a div element for breed country code
   const $divBreedCountyCode = document.createElement('div');
   $divBreedCountyCode.className =
     'breed-info-details breed-info-breed-country-code';
@@ -267,7 +268,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedCountyCode.append($divBreedCountyCodeLabel);
   $divBreedCountyCode.append($divBreedCountyCodeValue);
   $divBreedInfo.append($divBreedCountyCode);
-  // Adds a div element for breed origin
+  // Creates a div element for breed origin
   const $divBreedOrigin = document.createElement('div');
   $divBreedOrigin.className = 'breed-info-details breed-info-breed-origin';
   const $divBreedOriginLabel = document.createElement('div');
@@ -284,7 +285,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedOrigin.append($divBreedOriginLabel);
   $divBreedOrigin.append($divBreedOriginValue);
   $divBreedInfo.append($divBreedOrigin);
-  // Adds a div element for breed history
+  // Creates a div element for breed history
   const $divBreedHistory = document.createElement('div');
   $divBreedHistory.className = 'breed-info-details breed-info-breed-history';
   const $divBreedHistoryLabel = document.createElement('div');
@@ -301,7 +302,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedHistory.append($divBreedHistoryLabel);
   $divBreedHistory.append($divBreedHistoryValue);
   $divBreedInfo.append($divBreedHistory);
-  // Adds a div element for breed description
+  // Creates a div element for breed description
   const $divBreedDescription = document.createElement('div');
   $divBreedDescription.className =
     'breed-info-details breed-info-breed-description';
@@ -319,7 +320,7 @@ async function populateBreedInfo(breedInfo) {
   $divBreedDescription.append($divBreedDescriptionLabel);
   $divBreedDescription.append($divBreedDescriptionValue);
   $divBreedInfo.append($divBreedDescription);
-  // Adds a div element for breed images
+  // Creates a div element for breed images
   const $divBreedImages = document.createElement('div');
   $divBreedImages.className = 'breed-info-breed-images';
   const $divBreedImagesLabel = document.createElement('div');
@@ -353,24 +354,18 @@ async function populateBreedInfo(breedInfo) {
   $divBreedInfo.append($divBreedImages);
 }
 async function populateFavorites(favoritesList) {
-  try {
-    const response = await fetch(
-      `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`,
-    );
-    if (!response.ok) {
-      throw new Error(`Image is unavailable. Status: ${response.status}`);
-    } else {
-      $imgFavoritesPageImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`;
-    }
-  } catch (error) {
+  // Displays the reference image of the top favorite breed
+  if (favoritesList.length === 0) {
     $imgFavoritesPageImage.src = 'images/image-unavailable-icon.avif';
-    console.error('Error:', error);
+  } else {
+    $imgFavoritesPageImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[0].reference_image_id}.jpg`;
   }
   // Clears the div of previous favorites list
   if (!$divFavoritesList) throw new Error('divBreedInfo does not exist');
   $divFavoritesList.innerHTML = '';
   // Create a listing for a favorite breeds
   for (let i = 0; i < favoritesList.length; i++) {
+    // Creates input element for ranking feature
     const $divFavBreedRow = document.createElement('div');
     $divFavBreedRow.className = 'flex favorite-breed-row';
     $divFavBreedRow.setAttribute('rank', (i + 1).toString());
@@ -380,14 +375,17 @@ async function populateFavorites(favoritesList) {
     $inputFavBreedRank.min = '1';
     $inputFavBreedRank.max = favoritesList.length.toString();
     $inputFavBreedRank.value = (i + 1).toString();
+    // Creates the div element that displays the name of the breed
     const $divFavBreedInfo = document.createElement('div');
     $divFavBreedInfo.className = 'flex favorite-breed-info';
     const $divFavBreedInfoName = document.createElement('div');
     $divFavBreedInfoName.className = 'favorite-breed-info-name';
     $divFavBreedInfoName.textContent = `${favoritesList[i].name}`;
+    // Creates the img element that displays the reference image of the breed
     const $imgFavBreedImage = document.createElement('img');
     $imgFavBreedImage.className = 'favorite-breed-info-image';
     $imgFavBreedImage.src = `https://cdn2.thedogapi.com/images/${favoritesList[i].reference_image_id}.jpg`;
+    // Creates the trash bin icon
     const $iFavBreedTrash = document.createElement('i');
     $iFavBreedTrash.className = 'fa-solid fa-trash favorite-breed-trash';
     $divFavBreedRow.append($inputFavBreedRank);
@@ -409,7 +407,7 @@ for (const view of $dataViews) {
 }
 populateBreedsList(ppData.breedsList);
 populateFavorites(ppData.favoritesList);
-// Toggles between different page views
+// Toggles between different page views based on tab selection
 $ulNavBarNav.addEventListener('click', (event) => {
   const eventTarget = event.target;
   for (const view of $dataViews) {
@@ -432,18 +430,10 @@ $selectBreedsList.addEventListener('change', async (event) => {
   } else {
     await fetchBreedInfo(Number(eventTarget.value));
     populateBreedInfo(breedInfo);
-    try {
-      const response = await fetch(
-        `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`,
-      );
-      if (!response.ok) {
-        throw new Error(`Image is unavailable. Status: ${response.status}`);
-      } else {
-        $imgBreedsPageImage.src = `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`;
-      }
-    } catch (error) {
+    if (!breedInfo.reference_image_id) {
       $imgBreedsPageImage.src = 'images/image-unavailable-icon.avif';
-      console.error('Error:', error);
+    } else {
+      $imgBreedsPageImage.src = `https://cdn2.thedogapi.com/images/${breedInfo.reference_image_id}.jpg`;
     }
   }
 });
